@@ -19,8 +19,8 @@ if (isset($_POST["loginadmin"])) {
         // password_verify($password, $row["password"]
         if ($password == $row["password"]) {
             $_SESSION["admindata"] = $row;
-            $_SESSION["loginadmin"] = true;
-            header("Location: testpage.php");
+            $_SESSION["admin"] = true;
+            header("Location: dashboard/admin/admin.php");
             exit;
         }
     }

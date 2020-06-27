@@ -1,16 +1,27 @@
 <?php
+session_start();
+require_once '../../engine/functions.php';
 
-require_once '../engine/functions.php';
+if (!isset($_SESSION["admin"])) {
+    header("Location: ../../adminlogin.php");
+    exit;
+}
+
+$admins = $_SESSION["admindata"];
+
+$kepsekdata = query("SELECT * FROM tbl_kepsek");
+mysqli_fetch_assoc($kepsekdata);
+
 
 $data = query("SELECT * FROM tbl_guru");
-
 mysqli_fetch_assoc($data);
 
-$datauser = query("SELECT * FROM user");
 
+$datauser = query("SELECT * FROM user");
 mysqli_fetch_assoc($datauser);
 
-$relasi = query("SELECT * FROM tbl_absen WHERE id_user");
+
+// $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
 
 ?>
 
@@ -30,19 +41,19 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
 
     <!-- Bootstrap Core Css -->
-    <link href="../vendor/bsb/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
 
     <!-- Waves Effect Css -->
-    <link href="../vendor/bsb/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Animation Css -->
-    <link href="../vendor/bsb/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/plugins/animate-css/animate.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link href="../vendor/bsb/css/style.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/css/style.css" rel="stylesheet" />
 
-    <!-- Admin../vendor/bsb Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../vendor/bsb/css/themes/all-themes.css" rel="stylesheet" />
+    <!-- Admin../../vendor/bsb Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../vendor/bsb/css/themes/all-themes.css" rel="stylesheet" />
     <style>
         .legal {
             display: none !important;
@@ -101,6 +112,9 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                     <li class="pull-right">
                         <a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a>
                     </li>
+                    <li>
+                        <a href="../../logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -116,9 +130,9 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        John Doe
+                        <?= $admins["nama"]; ?>
                     </div>
-                    <div class="email">john.doe@example.com</div>
+                    <div class="email"><?= $admins["email"]; ?></div>
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
@@ -190,7 +204,7 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
             <div class="legal">
                 <div class="copyright">
                     &copy; 2016 - 2017
-                    <a href="javascript:void(0);">Admin../vendor/bsb - Material Design</a>.
+                    <a href="javascript:void(0);">Admin../../vendor/bsb - Material Design</a>.
                 </div>
                 <div class="version"><b>Version: </b> 1.0.5</div>
             </div>
@@ -256,6 +270,63 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                 </div>
             </div>
         </div>
+
+        <!-- Exportable Table -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            DAFTAR GURU
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Kepala Sekolah</th>
+                                        <th>NIP</th>
+                                        <th>Email</th>
+                                        <th>Telepon</th>
+                                        <th>Alamat</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <?php foreach ($kepsekdata as $kepsek) { ?>
+                                            <td><a href="detail.php?id=<?= $kepsek["id_kepsek"]; ?>"><?= $kepsek["nama"]; ?></a></td>
+                                            <td><?= $kepsek["nip"]; ?></td>
+                                            <td><?= $kepsek["email"]; ?></td>
+                                            <td><?= $kepsek["telepon"]; ?></td>
+                                            <td><?= $kepsek["alamat"]; ?></td>
+                                            <td>
+                                                <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
+                                                <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
+                                            </td>
+                                        <?php } ?>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Exportable Table -->
 
         <!-- Exportable Table -->
         <div class="row clearfix">
@@ -374,29 +445,29 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
     </section>
 
     <!-- Jquery Core Js -->
-    <script src="../vendor/bsb/plugins/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core Js -->
-    <script src="../vendor/bsb/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="../../vendor/bsb/plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../vendor/bsb/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../vendor/bsb/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
-    <script src="../vendor/bsb/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="../../vendor/bsb/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
     <!-- Waves Effect Plugin Js -->
-    <script src="../vendor/bsb/plugins/node-waves/waves.js"></script>
+    <script src="../../vendor/bsb/plugins/node-waves/waves.js"></script>
 
     <!-- Jquery CountTo Plugin Js -->
-    <script src="../vendor/bsb/plugins/jquery-countto/jquery.countTo.js"></script>
+    <script src="../../vendor/bsb/plugins/jquery-countto/jquery.countTo.js"></script>
 
     <!-- Custom Js -->
-    <script src="../vendor/bsb/js/admin.js"></script>
-    <script src="../vendor/bsb/js/pages/index.js"></script>
+    <script src="../../vendor/bsb/js/admin.js"></script>
+    <script src="../../vendor/bsb/js/pages/index.js"></script>
 
     <!-- Demo Js -->
-    <script src="../vendor/bsb/js/demo.js"></script>
+    <script src="../../vendor/bsb/js/demo.js"></script>
 </body>
 
 </html>

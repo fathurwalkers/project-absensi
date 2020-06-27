@@ -1,6 +1,15 @@
 <?php
+session_start();
+require_once '../../engine/functions.php';
 
-require_once '../engine/functions.php';
+if (!isset($_SESSION["login"])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
+
+
+$kepsekdata = $_SESSION["kepsekdata"];
 
 $data = query("SELECT * FROM tbl_guru");
 
@@ -10,7 +19,7 @@ $datauser = query("SELECT * FROM user");
 
 mysqli_fetch_assoc($datauser);
 
-$relasi = query("SELECT * FROM tbl_absen WHERE id_user");
+// $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
 
 ?>
 
@@ -30,22 +39,33 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
 
     <!-- Bootstrap Core Css -->
-    <link href="../vendor/bsb/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
 
     <!-- Waves Effect Css -->
-    <link href="../vendor/bsb/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Animation Css -->
-    <link href="../vendor/bsb/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/plugins/animate-css/animate.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link href="../vendor/bsb/css/style.css" rel="stylesheet" />
+    <link href="../../vendor/bsb/css/style.css" rel="stylesheet" />
 
-    <!-- Admin../vendor/bsb Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../vendor/bsb/css/themes/all-themes.css" rel="stylesheet" />
+    <!-- Admin../../vendor/bsb Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="../../vendor/bsb/css/themes/all-themes.css" rel="stylesheet" />
+
+    <!-- BOOTSTRAP -->
     <style>
         .legal {
             display: none !important;
+        }
+
+        .sidebar .user-info {
+            padding: 13px 15px 12px 15px;
+            white-space: nowrap;
+            position: relative;
+            border-bottom: 1px solid #e9e9e9;
+            background-color: green;
+            height: 135px;
         }
     </style>
 </head>
@@ -101,6 +121,10 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                     <li class="pull-right">
                         <a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a>
                     </li>
+                    <!-- LOGOUT -->
+                    <li>
+                        <a href="logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -112,35 +136,14 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="images/user.png" width="48" height="48" alt="User" />
+                    <img src="https://images.vexels.com/media/users/3/147101/isolated/preview/b4a49d4b864c74bb73de63f080ad7930-instagram-profile-button-by-vexels.png" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        John Doe
+                        <a href="profile.php" class=""><?= $kepsekdata["nama"]; ?></a>
                     </div>
-                    <div class="email">john.doe@example.com</div>
-                    <div class="btn-group user-helper-dropdown">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <div class="email"><?= $kepsekdata["email"]; ?></div>
+
                 </div>
             </div>
             <!-- #User Info -->
@@ -149,6 +152,14 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 698px;">
                     <ul class="list" style="overflow: hidden; width: auto; height: 698px;">
                         <li class="header">Menu Navigasi</li>
+
+                        <li class="focusOnActivate">
+                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block" name="detail">
+                                <i class="material-icons">info</i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+
                         <li class="focusOnActivate">
                             <a href="" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
@@ -163,23 +174,6 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                             </a>
                         </li>
 
-                        <li>
-                            <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
-                                <i class="material-icons">view_list</i>
-                                <span>Tables</span>
-                            </a>
-                            <ul class="ml-menu">
-                                <li>
-                                    <a href="pages/tables/normal-tables.html" class=" waves-effect waves-block">Normal Tables</a>
-                                </li>
-                                <li>
-                                    <a href="pages/tables/jquery-datatable.html" class=" waves-effect waves-block">Jquery Datatables</a>
-                                </li>
-                                <li>
-                                    <a href="pages/tables/editable-table.html" class=" waves-effect waves-block">Editable Tables</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -190,7 +184,7 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
             <div class="legal">
                 <div class="copyright">
                     &copy; 2016 - 2017
-                    <a href="javascript:void(0);">Admin../vendor/bsb - Material Design</a>.
+                    <a href="javascript:void(0);">Admin../../vendor/bsb - Material Design</a>.
                 </div>
                 <div class="version"><b>Version: </b> 1.0.5</div>
             </div>
@@ -216,8 +210,8 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                             <i class="material-icons">playlist_add_check</i>
                         </div>
                         <div class="content">
-                            <div class="text">NEW TASKS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
+                            <div class="text">GURU</div>
+                            <div class="number count-to" data-from="0" data-to="0" data-speed="15" data-fresh-interval="20"></div>
                         </div>
                     </div>
                 </div>
@@ -240,17 +234,6 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                         <div class="content">
                             <div class="text">NEW COMMENTS</div>
                             <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">person_add</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW VISITORS</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20"></div>
                         </div>
                     </div>
                 </div>
@@ -279,6 +262,7 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
                         </ul>
                     </div>
                     <div class="body">
+                        <?php var_dump($kepsekdata); ?>
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                 <thead>
@@ -373,30 +357,32 @@ $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
 
     </section>
 
+    <!-- JS -->
+
     <!-- Jquery Core Js -->
-    <script src="../vendor/bsb/plugins/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core Js -->
-    <script src="../vendor/bsb/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="../../vendor/bsb/plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="../vendor/bsb/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../../vendor/bsb/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
-    <script src="../vendor/bsb/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="../../vendor/bsb/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
     <!-- Waves Effect Plugin Js -->
-    <script src="../vendor/bsb/plugins/node-waves/waves.js"></script>
+    <script src="../../vendor/bsb/plugins/node-waves/waves.js"></script>
 
     <!-- Jquery CountTo Plugin Js -->
-    <script src="../vendor/bsb/plugins/jquery-countto/jquery.countTo.js"></script>
+    <script src="../../vendor/bsb/plugins/jquery-countto/jquery.countTo.js"></script>
 
     <!-- Custom Js -->
-    <script src="../vendor/bsb/js/admin.js"></script>
-    <script src="../vendor/bsb/js/pages/index.js"></script>
+    <script src="../../vendor/bsb/js/admin.js"></script>
+    <script src="../../vendor/bsb/js/pages/index.js"></script>
 
     <!-- Demo Js -->
-    <script src="../vendor/bsb/js/demo.js"></script>
+    <script src="../../vendor/bsb/js/demo.js"></script>
 </body>
 
 </html>

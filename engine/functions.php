@@ -56,6 +56,22 @@ function registrasi($data)
     return mysqli_affected_rows($conn);
 }
 
+
+// if (isset($_POST["generate"])) {
+
+//     //$text = $_POST[];
+
+//     $path = '../assets/img/qrimage/';
+//     $file = $path . uniqid() . ".png";
+
+//     $qrtext = $_POST["id_kepsek"];
+
+//     $generated = QRcode::png($qrtext, $file, 'L', 10, 2);
+
+//     echo "<center><img src='" . $file . "'></center>";
+// }
+
+
 // function loginadmin($data)
 // {
 //     global $conn;
