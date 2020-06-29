@@ -1,5 +1,6 @@
 <?php
 session_start();
+// error_reporting(0);
 require_once '../../engine/functions.php';
 
 if (!isset($_SESSION["admin"])) {
@@ -23,6 +24,8 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '1'");
 // $resultfetch = mysqli_fetch_assoc($dataguru);
+
+$dataabsen = query("SELECT * FROM absensi");
 
 ?>
 
@@ -60,11 +63,15 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
             display: none !important;
         }
     </style>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- scanner -->
+    <script src="../../engine/qrcode/scanner/vendor/modernizr/modernizr.js"></script>
+    <script src="../../engine/qrcode/scanner/vendor/vue/vue.min.js"></script>
 </head>
 
 <body class="theme-green">
     <!-- Page Loader -->
-    <div class="page-loader-wrapper">
+    <!-- <div class="page-loader-wrapper">
         <div class="loader">
             <div class="preloader">
                 <div class="spinner-layer pl-red">
@@ -78,7 +85,7 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
             </div>
             <p>Please wait...</p>
         </div>
-    </div>
+    </div> -->
     <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
@@ -149,7 +156,7 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
+                            <a href="admin.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
                                 <span>Home</span>
                             </a>
@@ -197,6 +204,7 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
+                            <?php echo $datadetail["nip"]; ?>
                             <h2>
                                 HISTORI ABSENSI
                             </h2>
@@ -214,73 +222,19 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php //while ($kepsek = mysqli_fetch_assoc($datakepsek)) { 
+                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
                                         ?>
-                                        <tr>
-                                            <td>Fathur</td>
-                                            <td>000493921</td>
-                                            <td>16-06-2020</td>
-                                            <td class="btn btn-success">Hadir</td>
-                                            <td>
-                                                <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                            </td>
-                                        </tr>
-                                        <?php //} 
-                                        ?>
-                                        <tr>
-                                            <td>Fathur</td>
-                                            <td>000493921</td>
-                                            <td>16-06-2020</td>
-                                            <td class="btn btn-danger">Tidak Hadir</td>
-                                            <td>
-                                                <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Exportable Table -->
-
-
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                INFORMASI KEPALA SEKOLAH
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Kepsek</th>
-                                            <th>NIP</th>
-                                            <th>Email</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($kepsek = mysqli_fetch_assoc($datakepsek)) { ?>
                                             <tr>
-                                                <td><?= $kepsek["nama"]; ?></td>
-                                                <td><?= $kepsek["nip"]; ?></td>
-                                                <td><?= $kepsek["email"]; ?></td>
-                                                <td><?= $kepsek["alamat"]; ?></td>
-                                                <td><?= $kepsek["telepon"]; ?></td>
+                                                <td><?= $_SESSION["datadetail"]["nama"]; ?></td>
+                                                <td>000493921</td>
+                                                <td><?= $absen["tanggal_absen"]; ?></td>
+                                                <td class="btn btn-success">Hadir</td>
                                                 <td>
                                                     <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
                                                 </td>
                                             </tr>
                                         <?php } ?>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -289,54 +243,97 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                 </div>
             </div>
             <!-- #END# Exportable Table -->
-
-
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="container">
+                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
                     <div class="card">
-                        <div class="header">
+                        <div class="header bg-green">
                             <h2>
-                                DAFTAR GURU
+                                Scanner
                             </h2>
                         </div>
                         <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Guru</th>
-                                            <th>NIP</th>
-                                            <th>Email</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($guru = mysqli_fetch_assoc($dataguru)) { ?>
-                                            <tr>
-                                                <td><?= $guru["nama"]; ?></td>
-                                                <td><?= $guru["nip"]; ?></td>
-                                                <td><?= $guru["email"]; ?></td>
-                                                <td><?= $guru["alamat"]; ?></td>
-                                                <td><?= $guru["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                    <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <center>
+                                <!-- scan -->
+                                <div id="app" class="row box">
+                                    <div class="col-md-4 col-md-offset-4">
+                                        <ul>
+                                            <li v-if="cameras.length === 0" class="empty">No cameras found</li>
+                                            <li v-for="camera in cameras">
+                                                <span v-if="camera.id == activeCameraId" :title="formatName(camera.name)" class="active"><input type="radio" class="align-middle mr-1" checked> {{ formatName(camera.name) }}</span>
+                                                <span v-if="camera.id != activeCameraId" :title="formatName(camera.name)">
+                                                    <a @click.stop="selectCamera(camera)"> <input type="radio" class="align-middle mr-1">@{{ formatName(camera.name) }}</a>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                        <!-- form scan -->
+                                        <form action="" method="POST" id="myForm">
+                                            <fieldset class="scheduler-border">
+                                                <legend class="scheduler-border"> Masukkan NIP / Scan QR Code </legend>
+                                                <input type="text" name="qrcode" id="code" autofocus>
+                                            </fieldset>
+                                        </form>
+                                        <?php
+                                        // if (!empty($_POST['qrcode'])) {
+                                        //     global $conn;
+                                        //     $qrcode = $_POST['qrcode'];
+                                        //     // $array = explode('|', $qrcode);
+                                        //     // $dataadmin = $_SESSION["dataadmin"];
+                                        //     // $datadetail = $_SESSION["datadetail"];
+                                        //     $nip = $datadetail["nip"];
+                                        //     $idadmin = $datadetail["id"];
+                                        //     $sqlmatch = "SELECT nip FROM detail WHERE nip = '$qrcode' LIMIT 1";
+                                        //     $match = mysqli_query($conn, $sqlmatch);
+
+                                        //     if (!mysqli_num_rows($match)) {
+                                        //         header("Location: ../../dashboard/admin/scanner.php");
+                                        //     } else {
+                                        //         $fetchqr = mysqli_fetch_assoc($match);
+                                        //         $_SESSION["cekqrcode"] =  $fetchqr;
+                                        //         header("Location: ../../dashboard/admin/scanner.php");
+                                        //         exit;
+                                        //     }
+
+
+                                        //     header("Location: ../../dashboard/admin/scanner.php");
+                                        //     // }
+                                        // }
+                                        if (!empty($_POST['qrcode']) && ($_POST['qrcode'] = $datadetail['nip'])) {
+                                            // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
+                                            global $conn;
+                                            $id = $datadetail["id"];
+                                            date_default_timezone_set("Asia/Makassar");
+                                            $tanggal = date('Y-m-d H:i:s', strtotime('now'));
+                                            $insert = "INSERT INTO absensi ('user_id', 'tanggal_absen') VALUES ('$id', '$tanggal')";
+                                            $query = mysqli_query($conn, $insert);
+                                            $_SESSION["salah"] = $tanggal;
+                                            header("Location: ../../dashboard/admin/testpage.php");
+                                            exit;
+                                        } else {
+                                            echo "Belum ada data";
+                                            $_SESSION["salah"] = mysqli_num_rows($query);
+                                        }
+                                        ?>
+
+                                    </div>
+                                    <div class="col-xs-12 preview-container camera">
+                                        <video id="preview" class="col-xs-12 thumbnail"></video>
+                                    </div>
+                                </div>
+                                <!-- scanner -->
+                            </center>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- #END# Exportable Table -->
-        </div>
     </section>
+
+
+    <script src="../../engine/qrcode/scanner/js/app.js"></script>
+    <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>
+    <script src="../../engine/qrcode/scanner/js/scanner.js"></script>
+
+
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
