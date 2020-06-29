@@ -7,21 +7,22 @@ if (!isset($_SESSION["admin"])) {
     exit;
 }
 
-$admins = $_SESSION["admindata"];
+$dataadmin = $_SESSION["dataadmin"];
+$datadetail = $_SESSION["datadetail"];
 
-$kepsekdata = query("SELECT * FROM tbl_kepsek");
-mysqli_fetch_assoc($kepsekdata);
-
-
-$data = query("SELECT * FROM tbl_guru");
-mysqli_fetch_assoc($data);
-
-
-$datauser = query("SELECT * FROM user");
-mysqli_fetch_assoc($datauser);
+$dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '2'");
 
 
-// $relasi = query("SELECT * FROM tbl_absen WHERE id_user");
+$datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '1'");
+// $resultfetch = mysqli_fetch_assoc($dataguru);
 
 ?>
 
@@ -109,11 +110,8 @@ mysqli_fetch_assoc($datauser);
                     </li>
                     <!-- #END# Call Search -->
 
-                    <li class="pull-right">
-                        <a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a>
-                    </li>
                     <li>
-                        <a href="../../logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>
+                        <a href="logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>
                     </li>
                 </ul>
             </div>
@@ -126,34 +124,13 @@ mysqli_fetch_assoc($datauser);
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="images/user.png" width="48" height="48" alt="User" />
+                    <img src="https://cdn.iconscout.com/icon/free/png-256/user-avatar-contact-portfolio-personal-portrait-profile-1-5182.png" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?= $admins["nama"]; ?>
+                        <?= $datadetail["nama"]; ?>
                     </div>
-                    <div class="email"><?= $admins["email"]; ?></div>
-                    <div class="btn-group user-helper-dropdown">
-                        <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a>
-                            </li>
-                        </ul>
+                    <div class="email"><?= $dataadmin["email"]; ?>
                     </div>
                 </div>
             </div>
@@ -163,6 +140,14 @@ mysqli_fetch_assoc($datauser);
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 698px;">
                     <ul class="list" style="overflow: hidden; width: auto; height: 698px;">
                         <li class="header">Menu Navigasi</li>
+
+                        <li class="focusOnActivate">
+                            <a href="" class="toggled waves-effect waves-block">
+                                <i class="material-icons">person_pin</i>
+                                <span>Informasi Pengguna</span>
+                            </a>
+                        </li>
+
                         <li class="focusOnActivate">
                             <a href="" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
@@ -172,28 +157,11 @@ mysqli_fetch_assoc($datauser);
 
                         <li class="focusOnActivate">
                             <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">date_range</i>
+                                <i class="material-icons">edit</i>
                                 <span>Buat Absen</span>
                             </a>
                         </li>
 
-                        <li>
-                            <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
-                                <i class="material-icons">view_list</i>
-                                <span>Tables</span>
-                            </a>
-                            <ul class="ml-menu">
-                                <li>
-                                    <a href="pages/tables/normal-tables.html" class=" waves-effect waves-block">Normal Tables</a>
-                                </li>
-                                <li>
-                                    <a href="pages/tables/jquery-datatable.html" class=" waves-effect waves-block">Jquery Datatables</a>
-                                </li>
-                                <li>
-                                    <a href="pages/tables/editable-table.html" class=" waves-effect waves-block">Editable Tables</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -277,159 +245,79 @@ mysqli_fetch_assoc($datauser);
                 <div class="card">
                     <div class="header">
                         <h2>
-                            DAFTAR GURU
+                            INFORMASI KEPALA SEKOLAH
                         </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
                     </div>
                     <div class="body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                 <thead>
                                     <tr>
-                                        <th>Nama Kepala Sekolah</th>
+                                        <th>Nama Kepsek</th>
                                         <th>NIP</th>
                                         <th>Email</th>
-                                        <th>Telepon</th>
                                         <th>Alamat</th>
+                                        <th>Telepon</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <?php foreach ($kepsekdata as $kepsek) { ?>
-                                            <td><a href="detail.php?id=<?= $kepsek["id_kepsek"]; ?>"><?= $kepsek["nama"]; ?></a></td>
+                                    <?php while ($kepsek = mysqli_fetch_assoc($datakepsek)) { ?>
+                                        <tr>
+                                            <td><?= $kepsek["nama"]; ?></td>
                                             <td><?= $kepsek["nip"]; ?></td>
                                             <td><?= $kepsek["email"]; ?></td>
-                                            <td><?= $kepsek["telepon"]; ?></td>
                                             <td><?= $kepsek["alamat"]; ?></td>
+                                            <td><?= $kepsek["telepon"]; ?></td>
+                                            <td>
+                                                <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Exportable Table -->
+
+
+        <!-- Exportable Table -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            DAFTAR GURU
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Guru</th>
+                                        <th>NIP</th>
+                                        <th>Email</th>
+                                        <th>Alamat</th>
+                                        <th>Telepon</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($guru = mysqli_fetch_assoc($dataguru)) { ?>
+                                        <tr>
+                                            <td><?= $guru["nama"]; ?></td>
+                                            <td><?= $guru["nip"]; ?></td>
+                                            <td><?= $guru["email"]; ?></td>
+                                            <td><?= $guru["alamat"]; ?></td>
+                                            <td><?= $guru["telepon"]; ?></td>
                                             <td>
                                                 <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
                                                 <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
                                             </td>
-                                        <?php } ?>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- #END# Exportable Table -->
-
-        <!-- Exportable Table -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            DAFTAR GURU
-                        </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Guru</th>
-                                        <th>NIP</th>
-                                        <th>Email</th>
-                                        <th>Telepon</th>
-                                        <th>Alamat</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($data as $guru) { ?>
-                                        <tr>
-                                            <td><a href="detail.php?id=<?= $guru["id_guru"]; ?>"><?= $guru["nama"]; ?></a></td>
-                                            <td><?= $guru["nip"]; ?></td>
-                                            <td><?= $guru["email"]; ?></td>
-                                            <td><?= $guru["telepon"]; ?></td>
-                                            <td><?= $guru["alamat"]; ?></td>
-                                            <td>
-                                                <a href="edit.php?id_user=<?= $guru["id_guru"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                <a href="delete.php?id_user=<?= $guru["id_guru"]; ?>" class="btn btn-danger">Delete</a>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- #END# Exportable Table -->
-        <!-- Exportable Table -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            DAFTAR USERS
-                        </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Guru</th>
-                                        <th>NIP</th>
-                                        <th>Email</th>
-                                        <th>Telepon</th>
-                                        <th>Alamat</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($datauser as $user) { ?>
-                                        <tr>
-                                            <td><a href="detail.php?id=<?= $user["id_user"]; ?>"><?= $user["nama"]; ?></a></td>
-                                            <td><?= $user["nip"]; ?></td>
-                                            <td><?= $user["email"]; ?></td>
-                                            <td><?= $user["telepon"]; ?></td>
-                                            <td><?= $user["alamat"]; ?></td>
-                                            <td>
-                                                <a href="edit.php?id_user=<?= $user["id_user"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                <a href="delete.php?id_user=<?= $user["id_user"]; ?>" class="btn btn-danger">Delete</a>
-                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -441,7 +329,6 @@ mysqli_fetch_assoc($datauser);
         </div>
         <!-- #END# Exportable Table -->
         </div>
-
     </section>
 
     <!-- Jquery Core Js -->

@@ -2,24 +2,24 @@
 session_start();
 require_once '../../engine/functions.php';
 
-if (!isset($_SESSION["kepsek"])) {
+if (!isset($_SESSION["guru"])) {
     header("Location: ../../login.php");
     exit;
 }
 
-$datakepsek = $_SESSION["datakepsek"];
-$datalistkepsek = $_SESSION["datadetail"];
+$guru = $_SESSION["dataguru"];
+$datadetailguru = $_SESSION["datadetail"];
 
 if (isset($_POST["generate"])) {
 
     //$text = $_POST[];
 
-    global $datalistkepsek;
+    global $kepsekdata;
 
     $path = '../../assets/img/qrimage/';
-    $file = $path . $datakepsek["username"] . ".png";
+    $file = $path . $guru["username"] . ".png";
 
-    $qrtext = $_POST["qrkepsek"];
+    $qrtext = $_POST["qrguru"];
 
     $generated = QRcode::png($qrtext, $file, 'L', 10, 2);
 }
@@ -142,9 +142,9 @@ if (isset($_POST["generate"])) {
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <a href="profile.php" class=""><?= $datalistkepsek["nama"]; ?></a>
+                        <a href="profile.php" class=""><?= $datadetailguru["nama"]; ?></a>
                     </div>
-                    <div class="email"><?= $datakepsek["email"]; ?></div>
+                    <div class="email"><?= $guru["email"]; ?></div>
 
                 </div>
             </div>
@@ -156,7 +156,7 @@ if (isset($_POST["generate"])) {
                         <li class="header">Menu Navigasi</li>
 
                         <li class="focusOnActivate">
-                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
+                            <a href="detail_guru.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">person_pin</i>
                                 <span>Informasi Pengguna</span>
                             </a>
@@ -213,11 +213,11 @@ if (isset($_POST["generate"])) {
                     </h2>
                 </div>
                 <div class="body">
-                    <h5>Nama Lengkap : <?= $datalistkepsek["nama"]; ?></h5>
-                    <h5>NIP : <?= $datalistkepsek["nip"]; ?></h5>
-                    <h5>Email : <?= $datakepsek["email"]; ?></h5>
-                    <h5>Nomor Telepon : <?= $datalistkepsek["telepon"]; ?></h5>
-                    <h5>Alamat : <?= $datalistkepsek["alamat"]; ?></h5>
+                    <h5>Nama Lengkap : <?= $datadetailguru["nama"]; ?></h5>
+                    <h5>NIP : <?= $datadetailguru["nip"]; ?></h5>
+                    <h5>Email : <?= $guru["email"]; ?></h5>
+                    <h5>Nomor Telepon : <?= $datadetailguru["telepon"]; ?></h5>
+                    <h5>Alamat : <?= $datadetailguru["alamat"]; ?></h5>
                 </div>
             </div>
         </div>
@@ -232,10 +232,10 @@ if (isset($_POST["generate"])) {
                 </div>
                 <div class="body">
                     <center>
-                        <img src="../../assets/img/qrimage/<?= $datalistkepsek["qrcode"]; ?>" width="250px">
+                        <img src="../../assets/img/qrimage/<?= $datadetailguru["qrcode"] . ".png"; ?>" width="250px">
 
                         <form action="" method="post">
-                            <input type="hidden" name="qrkepsek" value="<?= $datalistkepsek["nip"]; ?>">
+                            <input type="hidden" name="qrguru" value="<?= $datadetailguru["nip"]; ?>">
                             <br>
                             <button type="submit" name="generate" class="btn btn-success">GENERATE</button>
                         </form>

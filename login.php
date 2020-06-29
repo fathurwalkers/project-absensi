@@ -2,31 +2,32 @@
 session_start();
 include 'engine/functions.php';
 
-if (isset($_POST["login"])) {
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    global $conn;
+    $query = "SELECT * FROM user WHERE username = '{$username}' AND password = '$password' AND role_id = '3' LIMIT 1";
 
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+    $run = mysqli_query($conn, $query);
 
-    $query = "SELECT * FROM tbl_kepsek WHERE username = '$username'";
+    if (!$run) {
+        echo "password username salah";
+    } else {
+        $result = mysqli_fetch_assoc($run);
 
-    $result = mysqli_query($conn, $query);
-
-    if (mysqli_num_rows($result) === 1) {
-
-        $row = mysqli_fetch_assoc($result);
-        // password_verify($password, $row["password"]
-        if ($password == $row["password"]) {
-            $_SESSION["kepsekdata"] = $row;
-            $_SESSION["login"] = true;
-            header("Location: dashboard/home.php");
+        if (!empty($result)) {
+            $sqlquery = "SELECT * FROM detail WHERE id = '{$result['detail_id']}'";
+            $ambildatadetail = mysqli_query($conn, $sqlquery);
+            $row = mysqli_fetch_assoc($ambildatadetail);
+            $_SESSION['datadetail'] = $row;
+            $_SESSION["datakepsek"] = $result;
+            $_SESSION["kepsek"] = true;
+            header("Location: dashboard/kepsek/home.php");
             exit;
         }
     }
-
-    $error = true;
 }
+
 ?>
 
 <html lang="en">
@@ -34,7 +35,7 @@ if (isset($_POST["login"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Administrator</title>
+    <title>Login</title>
     <style type="text/css">
         * {
             padding: 0;
@@ -221,6 +222,14 @@ if (isset($_POST["login"])) {
             background-position: right;
         }
 
+        .links a:nth-child(1) {
+            float: left;
+        }
+
+        .links a:nth-child(2) {
+            float: right;
+        }
+
         @media screen and (max-width: 1050px) {
             .container {
                 grid-gap: 5rem;
@@ -299,6 +308,10 @@ if (isset($_POST["login"])) {
                     </div>
                 </div>
                 <button type="submit" class="btn" name="login">LOGIN</button>
+                <div class="links">
+                    <a href="adminlogin.php">Login Admin</a>
+                    <a href="loginguru.php">Login Guru</a>
+                </div>
             </form>
         </div>
     </div>
