@@ -25,10 +25,53 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                     WHERE jabatan_id = '1'");
 // $resultfetch = mysqli_fetch_assoc($dataguru);
 
-$dataabsen = query("SELECT * FROM absensi");
+$dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id 
+                    LEFT JOIN absensi ON user.detail_id = absensi.user_id
+                    WHERE role_id = '1'");
 
 ?>
+<?php
+// if (!empty($_POST['qrcode'])) {
+//     global $conn;
+//     $qrcode = $_POST['qrcode'];
+//     // $array = explode('|', $qrcode);
+//     // $dataadmin = $_SESSION["dataadmin"];
+//     // $datadetail = $_SESSION["datadetail"];
+//     $nip = $datadetail["nip"];
+//     $idadmin = $datadetail["id"];
+//     $sqlmatch = "SELECT nip FROM detail WHERE nip = '$qrcode' LIMIT 1";
+//     $match = mysqli_query($conn, $sqlmatch);
 
+//     if (!mysqli_num_rows($match)) {
+//         header("Location: ../../dashboard/admin/scanner.php");
+//     } else {
+//         $fetchqr = mysqli_fetch_assoc($match);
+//         $_SESSION["cekqrcode"] =  $fetchqr;
+//         header("Location: ../../dashboard/admin/scanner.php");
+//         exit;
+//     }
+
+
+//     header("Location: ../../dashboard/admin/scanner.php");
+//     // }
+// }
+if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
+    // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
+    global $conn;
+    $id = $datadetail["id"];
+    date_default_timezone_set("Asia/Makassar");
+    $tanggal = date('Y-m-d H:i:s', strtotime('now'));
+    $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
+    $query = mysqli_query($conn, $insert);
+    $_SESSION["salah"] = $tanggal;
+    header("Location: ../../dashboard/admin/testpage.php");
+    exit;
+} else {
+    $hehe = "Belum ada data";
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -198,13 +241,28 @@ $dataabsen = query("SELECT * FROM absensi");
             </div>
 
             <!-- Widgets -->
+            <div class="container">
+                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-green">
+                            <h2>
+                                INFO
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <h4>Ada absen yang sedang berlangsung</h4>
+                            <p>terbuka untuk 5 menit lagi</p>
+                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <?php echo $datadetail["nip"]; ?>
                             <h2>
                                 HISTORI ABSENSI
                             </h2>
@@ -225,10 +283,18 @@ $dataabsen = query("SELECT * FROM absensi");
                                         <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
                                         ?>
                                             <tr>
-                                                <td><?= $_SESSION["datadetail"]["nama"]; ?></td>
+                                                <td><?= $absen["nama"]; ?></td>
                                                 <td>000493921</td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">Hadir</td>
+                                                <td class="btn btn-success">
+                                                    <?php
+                                                    if ($_SESSION["waktuabsen"] == $logikapengaturanwaktu) {
+                                                        echo "Hadir";
+                                                    } else {
+                                                        echo "Tidak Hadir";
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td>
                                                     <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
                                                 </td>
@@ -273,47 +339,7 @@ $dataabsen = query("SELECT * FROM absensi");
                                                 <input type="text" name="qrcode" id="code" autofocus>
                                             </fieldset>
                                         </form>
-                                        <?php
-                                        // if (!empty($_POST['qrcode'])) {
-                                        //     global $conn;
-                                        //     $qrcode = $_POST['qrcode'];
-                                        //     // $array = explode('|', $qrcode);
-                                        //     // $dataadmin = $_SESSION["dataadmin"];
-                                        //     // $datadetail = $_SESSION["datadetail"];
-                                        //     $nip = $datadetail["nip"];
-                                        //     $idadmin = $datadetail["id"];
-                                        //     $sqlmatch = "SELECT nip FROM detail WHERE nip = '$qrcode' LIMIT 1";
-                                        //     $match = mysqli_query($conn, $sqlmatch);
-
-                                        //     if (!mysqli_num_rows($match)) {
-                                        //         header("Location: ../../dashboard/admin/scanner.php");
-                                        //     } else {
-                                        //         $fetchqr = mysqli_fetch_assoc($match);
-                                        //         $_SESSION["cekqrcode"] =  $fetchqr;
-                                        //         header("Location: ../../dashboard/admin/scanner.php");
-                                        //         exit;
-                                        //     }
-
-
-                                        //     header("Location: ../../dashboard/admin/scanner.php");
-                                        //     // }
-                                        // }
-                                        if (!empty($_POST['qrcode']) && ($_POST['qrcode'] = $datadetail['nip'])) {
-                                            // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
-                                            global $conn;
-                                            $id = $datadetail["id"];
-                                            date_default_timezone_set("Asia/Makassar");
-                                            $tanggal = date('Y-m-d H:i:s', strtotime('now'));
-                                            $insert = "INSERT INTO absensi ('user_id', 'tanggal_absen') VALUES ('$id', '$tanggal')";
-                                            $query = mysqli_query($conn, $insert);
-                                            $_SESSION["salah"] = $tanggal;
-                                            header("Location: ../../dashboard/admin/testpage.php");
-                                            exit;
-                                        } else {
-                                            echo "Belum ada data";
-                                            $_SESSION["salah"] = mysqli_num_rows($query);
-                                        }
-                                        ?>
+                                        <?php echo $hehe; ?>
 
                                     </div>
                                     <div class="col-xs-12 preview-container camera">

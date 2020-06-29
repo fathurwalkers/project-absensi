@@ -23,6 +23,11 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '1'");
 // $resultfetch = mysqli_fetch_assoc($dataguru);
+$dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id 
+                    LEFT JOIN absensi ON user.detail_id = absensi.user_id
+                    WHERE role_id = '1'");
 
 ?>
 
@@ -214,28 +219,21 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php //while ($kepsek = mysqli_fetch_assoc($datakepsek)) { 
+                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
                                         ?>
-                                        <tr>
-                                            <td>Fathur</td>
-                                            <td>000493921</td>
-                                            <td>16-06-2020</td>
-                                            <td class="btn btn-success">Hadir</td>
-                                            <td>
-                                                <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                            </td>
-                                        </tr>
-                                        <?php //} 
-                                        ?>
-                                        <tr>
-                                            <td>Fathur</td>
-                                            <td>000493921</td>
-                                            <td>16-06-2020</td>
-                                            <td class="btn btn-danger">Tidak Hadir</td>
-                                            <td>
-                                                <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td><?= $absen["nama"]; ?></td>
+                                                <td>000493921</td>
+                                                <td><?= $absen["tanggal_absen"]; ?></td>
+                                                <td class="btn btn-success">
+                                                    Hadir
+                                                </td>
+                                                <td>
+                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+
                                     </tbody>
                                 </table>
                             </div>
