@@ -26,8 +26,7 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.detail_id = absensi.user_id
-                    WHERE role_id = '1'");
+                    LEFT JOIN absensi ON user.id = absensi.user_id ORDER BY tanggal_absen DESC");
 
 ?>
 
@@ -203,7 +202,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                         <div class="body">
                             <h4>Ada absen yang sedang berlangsung</h4>
                             <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                            <p><a href="scanner.php" class="btn btn-primary" aria-disabled="true">Klik disini untuk absen</a></p>
                         </div>
                     </div>
                 </div>

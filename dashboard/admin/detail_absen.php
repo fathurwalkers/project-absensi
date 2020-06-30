@@ -1,67 +1,35 @@
 <?php
 session_start();
-// error_reporting(0);
 require_once '../../engine/functions.php';
 
-if (!isset($_SESSION["guru"])) {
-    header("Location: ../../loginguru.php");
+if (!isset($_SESSION["admin"])) {
+    header("Location: ../../adminlogin.php");
     exit;
 }
 
-$dataguru = $_SESSION["dataguru"];
+$dataadmin = $_SESSION["dataadmin"];
 $datadetail = $_SESSION["datadetail"];
 
+$dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '2'");
+
+
+$datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '1'");
+// $resultfetch = mysqli_fetch_assoc($dataguru);
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.id = absensi.user_id
-                    WHERE user.id = '{$dataguru['id']}'");
-
-
-// WHERE user.id = '{$dataguru['id']}'
-
-if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
-    // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
-    global $conn;
-    $id = $dataguru["id"];
-    date_default_timezone_set("Asia/Makassar");
-    $tanggal = date('Y-m-d H:i:s', strtotime('now'));
-    $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
-    $query = mysqli_query($conn, $insert);
-    $_SESSION["query"] = $query;
-    header("Location: ../../dashboard/guru/scanner.php");
-    exit;
-} else {
-    $hehe = "Belum ada data";
-    // header("Location: ../../dashboard/guru/scanner.php");
-}
-
-
-
-
-// $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
-//                     FROM user
-//                     LEFT JOIN detail ON user.detail_id = detail.id 
-//                     LEFT JOIN absensi ON user.detail_id = absensi.user_id
-//                     WHERE detail_id = '$iddetail'");
-
-
-// if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
-//     // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
-//     global $conn;
-//     // $id = $dataguru["detail_id"];
-//     date_default_timezone_set("Asia/Makassar");
-//     $tanggal = date('Y-m-d H:i:s', strtotime('now'));
-//     $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$iddetail', '$tanggal')";
-//     $query = mysqli_query($conn, $insert);
-//     // $_SESSION["salah"] = $tanggal;
-//     header("Location: ../../dashboard/guru/scanner.php");
-//     exit;
-// } else {
-//     $hehe = "Belum ada data";
-// }
+                    LEFT JOIN absensi ON user.id = absensi.user_id ORDER BY tanggal_absen DESC");
 
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -96,13 +64,26 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
             display: none !important;
         }
     </style>
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <!-- scanner -->
-    <script src="../../engine/qrcode/scanner/vendor/modernizr/modernizr.js"></script>
-    <script src="../../engine/qrcode/scanner/vendor/vue/vue.min.js"></script>
 </head>
 
 <body class="theme-green">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -153,7 +134,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <?= $datadetail["nama"]; ?>
                     </div>
-                    <div class="email"><?= $dataguru["email"]; ?>
+                    <div class="email"><?= $dataadmin["email"]; ?>
                     </div>
                 </div>
             </div>
@@ -172,9 +153,30 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="admin.php" class="toggled waves-effect waves-block">
+                            <a href="" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
                                 <span>Home</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="detail_absen.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">home</i>
+                                <span>History Absensi</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="" class="toggled waves-effect waves-block">
+                                <i class="material-icons">home</i>
+                                <span>Data Guru</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="" class="toggled waves-effect waves-block">
+                                <i class="material-icons">home</i>
+                                <span>Data Kepala Sekolah</span>
                             </a>
                         </li>
 
@@ -214,22 +216,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
             </div>
 
             <!-- Widgets -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                INFO
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <h4>Ada absen yang sedang berlangsung</h4>
-                            <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Exportable Table -->
             <div class="row clearfix">
@@ -259,7 +245,8 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">Hadir
+                                                <td class="btn btn-success">
+                                                    Hadir
                                                 </td>
                                                 <td>
                                                     <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
@@ -275,57 +262,9 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                 </div>
             </div>
             <!-- #END# Exportable Table -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                Scanner
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <center>
-                                <!-- scan -->
-                                <div id="app" class="row box">
-                                    <div class="col-md-4 col-md-offset-4">
-                                        <ul>
-                                            <li v-if="cameras.length === 0" class="empty">No cameras found</li>
-                                            <li v-for="camera in cameras">
-                                                <span v-if="camera.id == activeCameraId" :title="formatName(camera.name)" class="active"><input type="radio" class="align-middle mr-1" checked> {{ formatName(camera.name) }}</span>
-                                                <span v-if="camera.id != activeCameraId" :title="formatName(camera.name)">
-                                                    <a @click.stop="selectCamera(camera)"> <input type="radio" class="align-middle mr-1">@{{ formatName(camera.name) }}</a>
-                                                </span>
-                                            </li>
-                                        </ul>
-                                        <div class="clearfix"></div>
-                                        <!-- form scan -->
-                                        <form action="" method="POST" id="myForm">
-                                            <fieldset class="scheduler-border">
-                                                <legend class="scheduler-border"> Masukkan NIP / Scan QR Code </legend>
-                                                <input type="text" name="qrcode" id="code" autofocus>
-                                            </fieldset>
-                                        </form>
-                                        <?php echo $hehe; ?>
 
-                                    </div>
-                                    <div class="col-xs-12 preview-container camera">
-                                        <video id="preview" class="col-xs-12 thumbnail"></video>
-                                    </div>
-                                </div>
-                                <!-- scanner -->
-                            </center>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
     </section>
-
-
-    <script src="../../engine/qrcode/scanner/js/app.js"></script>
-    <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>
-    <script src="../../engine/qrcode/scanner/js/scanner.js"></script>
-
-
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>

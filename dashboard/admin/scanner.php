@@ -17,6 +17,8 @@ $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat,
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '2'");
 
+// WHERE jabatan_id = '2'");
+
 
 $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
                     FROM user
