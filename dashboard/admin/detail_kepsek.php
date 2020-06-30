@@ -232,55 +232,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 <h2>DASHBOARD</h2>
             </div>
 
-            <!-- Widgets -->
-
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                HISTORI ABSENSI
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>NIP</th>
-                                            <th>Tanggal</th>
-                                            <th>Keterangan</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
-                                        ?>
-                                            <tr>
-                                                <td><?= $absen["nama"]; ?></td>
-                                                <td><?= $absen["nip"]; ?></td>
-                                                <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">
-                                                    Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Exportable Table -->
-
-
             <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -325,51 +276,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
             </div>
             <!-- #END# Exportable Table -->
 
-
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                DAFTAR GURU
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Guru</th>
-                                            <th>NIP</th>
-                                            <th>Email</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($guru = mysqli_fetch_assoc($dataguru)) { ?>
-                                            <tr>
-                                                <td><?= $guru["nama"]; ?></td>
-                                                <td><?= $guru["nip"]; ?></td>
-                                                <td><?= $guru["email"]; ?></td>
-                                                <td><?= $guru["alamat"]; ?></td>
-                                                <td><?= $guru["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                    <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Exportable Table -->
         </div>
     </section>
 

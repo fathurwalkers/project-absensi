@@ -193,17 +193,38 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                     <ul class="list" style="overflow: hidden; width: auto; height: 698px;">
                         <li class="header">Menu Navigasi</li>
 
-                        <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
+                        <!-- <li class="focusOnActivate">
+                            <a href="detail" class="toggled waves-effect waves-block">
                                 <i class="material-icons">person_pin</i>
                                 <span>Informasi Pengguna</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="focusOnActivate">
                             <a href="admin.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
                                 <span>Home</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="detail_absen.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">analytics</i>
+                                <span>History Absensi</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="" class="toggled waves-effect waves-block">
+                                <i class="material-icons">toc</i>
+                                <span>Data Guru</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="" class="toggled waves-effect waves-block">
+                                <i class="material-icons">toc</i>
+                                <span>Data Kepala Sekolah</span>
                             </a>
                         </li>
 
