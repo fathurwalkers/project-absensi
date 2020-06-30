@@ -191,6 +191,23 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
     <section class="content">
         <div class="container-fluid">
+            <!-- Widgets -->
+            <div class="container">
+                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-green">
+                            <h2>
+                                INFO
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <h4>Ada absen yang sedang berlangsung</h4>
+                            <p>terbuka untuk 5 menit lagi</p>
+                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="block-header">
                 <h2>DASHBOARD</h2>
             </div>
@@ -223,7 +240,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                         ?>
                                             <tr>
                                                 <td><?= $absen["nama"]; ?></td>
-                                                <td>000493921</td>
+                                                <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
                                                 <td class="btn btn-success">
                                                     Hadir

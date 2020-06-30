@@ -66,7 +66,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
     $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
     $query = mysqli_query($conn, $insert);
     $_SESSION["salah"] = $tanggal;
-    header("Location: ../../dashboard/admin/testpage.php");
+    header("Location: ../../dashboard/admin/admin.php");
     exit;
 } else {
     $hehe = "Belum ada data";
@@ -284,16 +284,9 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                         ?>
                                             <tr>
                                                 <td><?= $absen["nama"]; ?></td>
-                                                <td>000493921</td>
+                                                <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">
-                                                    <?php
-                                                    if ($_SESSION["waktuabsen"] == $logikapengaturanwaktu) {
-                                                        echo "Hadir";
-                                                    } else {
-                                                        echo "Tidak Hadir";
-                                                    }
-                                                    ?>
+                                                <td class="btn btn-success">Hadir
                                                 </td>
                                                 <td>
                                                     <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>

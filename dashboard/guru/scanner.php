@@ -1,31 +1,64 @@
 <?php
 session_start();
+// error_reporting(0);
 require_once '../../engine/functions.php';
 
-if (!isset($_SESSION["kepsek"])) {
-    header("Location: ../../login.php");
+if (!isset($_SESSION["guru"])) {
+    header("Location: ../../loginguru.php");
     exit;
 }
 
-$datakepsek = $_SESSION["datakepsek"];
+$dataguru = $_SESSION["dataguru"];
 $datadetail = $_SESSION["datadetail"];
 
-$dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+$dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
-                    LEFT JOIN detail ON user.detail_id = detail.id
-                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
-                    WHERE jabatan_id = '2'");
+                    LEFT JOIN detail ON user.detail_id = detail.id 
+                    LEFT JOIN absensi ON user.detail_id = absensi.user_id
+                    WHERE detail_id = '{$dataguru['detail_id']}'");
+
+if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
+    // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
+    global $conn;
+    $id = $datadetail["id"];
+    date_default_timezone_set("Asia/Makassar");
+    $tanggal = date('Y-m-d H:i:s', strtotime('now'));
+    $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
+    $query = mysqli_query($conn, $insert);
+    $_SESSION["query"] = $query;
+    header("Location: ../../dashboard/guru/test.php");
+    exit;
+} else {
+    $hehe = "Belum ada data";
+    // header("Location: ../../dashboard/guru/scanner.php");
+}
 
 
-$datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
-                    FROM user
-                    LEFT JOIN detail ON user.detail_id = detail.id
-                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
-                    WHERE jabatan_id = '1'");
-// $resultfetch = mysqli_fetch_assoc($dataguru);
+
+
+// $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+//                     FROM user
+//                     LEFT JOIN detail ON user.detail_id = detail.id 
+//                     LEFT JOIN absensi ON user.detail_id = absensi.user_id
+//                     WHERE detail_id = '$iddetail'");
+
+
+// if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
+//     // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
+//     global $conn;
+//     // $id = $dataguru["detail_id"];
+//     date_default_timezone_set("Asia/Makassar");
+//     $tanggal = date('Y-m-d H:i:s', strtotime('now'));
+//     $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$iddetail', '$tanggal')";
+//     $query = mysqli_query($conn, $insert);
+//     // $_SESSION["salah"] = $tanggal;
+//     header("Location: ../../dashboard/guru/scanner.php");
+//     exit;
+// } else {
+//     $hehe = "Belum ada data";
+// }
 
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -60,26 +93,13 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
             display: none !important;
         }
     </style>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- scanner -->
+    <script src="../../engine/qrcode/scanner/vendor/modernizr/modernizr.js"></script>
+    <script src="../../engine/qrcode/scanner/vendor/vue/vue.min.js"></script>
 </head>
 
 <body class="theme-green">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Please wait...</p>
-        </div>
-    </div>
-    <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -130,7 +150,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <?= $datadetail["nama"]; ?>
                     </div>
-                    <div class="email"><?= $datakepsek["email"]; ?>
+                    <div class="email"><?= $dataguru["email"]; ?>
                     </div>
                 </div>
             </div>
@@ -142,14 +162,14 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                         <li class="header">Menu Navigasi</li>
 
                         <li class="focusOnActivate">
-                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
+                            <a href="" class="toggled waves-effect waves-block">
                                 <i class="material-icons">person_pin</i>
                                 <span>Informasi Pengguna</span>
                             </a>
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
+                            <a href="admin.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
                                 <span>Home</span>
                             </a>
@@ -187,29 +207,32 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-
-                <!-- Widgets -->
-                <div class="container">
-                    <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                        <div class="card">
-                            <div class="header bg-green">
-                                <h2>
-                                    INFO
-                                </h2>
-                            </div>
-                            <div class="body">
-                                <h4>Ada absen yang sedang berlangsung</h4>
-                                <p>terbuka untuk 5 menit lagi</p>
-                                <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <?php //var_dump($iddetail); 
+                ?><br><br>
+                <?php //var_dump($datadetail); 
+                ?><br><br>
+                <?php //var_dump($dataguru); 
+                ?><br><br>
                 <h2>DASHBOARD</h2>
             </div>
 
-
+            <!-- Widgets -->
+            <div class="container">
+                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="header bg-green">
+                            <h2>
+                                INFO
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <h4>Ada absen yang sedang berlangsung</h4>
+                            <p>terbuka untuk 5 menit lagi</p>
+                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Exportable Table -->
             <div class="row clearfix">
@@ -217,7 +240,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                     <div class="card">
                         <div class="header">
                             <h2>
-                                INFORMASI KEPALA SEKOLAH
+                                HISTORI ABSENSI
                             </h2>
                         </div>
                         <div class="body">
@@ -225,27 +248,28 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
-                                            <th>Nama Kepsek</th>
+                                            <th>Nama</th>
                                             <th>NIP</th>
-                                            <th>Email</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
+                                            <th>Tanggal</th>
+                                            <th>Keterangan</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php while ($kepsek = mysqli_fetch_assoc($datalistkepsek)) { ?>
+                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
+                                        ?>
                                             <tr>
-                                                <td><?= $kepsek["nama"]; ?></td>
-                                                <td><?= $kepsek["nip"]; ?></td>
-                                                <td><?= $kepsek["email"]; ?></td>
-                                                <td><?= $kepsek["alamat"]; ?></td>
-                                                <td><?= $kepsek["telepon"]; ?></td>
+                                                <td><?= $absen["nama"]; ?></td>
+                                                <td><?= $absen["nip"]; ?></td>
+                                                <td><?= $absen["tanggal_absen"]; ?></td>
+                                                <td class="btn btn-success">Hadir
+                                                </td>
                                                 <td>
                                                     <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
                                                 </td>
                                             </tr>
                                         <?php } ?>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -254,54 +278,57 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                 </div>
             </div>
             <!-- #END# Exportable Table -->
-
-
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="container">
+                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
                     <div class="card">
-                        <div class="header">
+                        <div class="header bg-green">
                             <h2>
-                                DAFTAR GURU
+                                Scanner
                             </h2>
                         </div>
                         <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Guru</th>
-                                            <th>NIP</th>
-                                            <th>Email</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($guru = mysqli_fetch_assoc($dataguru)) { ?>
-                                            <tr>
-                                                <td><?= $guru["nama"]; ?></td>
-                                                <td><?= $guru["nip"]; ?></td>
-                                                <td><?= $guru["email"]; ?></td>
-                                                <td><?= $guru["alamat"]; ?></td>
-                                                <td><?= $guru["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                    <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <center>
+                                <!-- scan -->
+                                <div id="app" class="row box">
+                                    <div class="col-md-4 col-md-offset-4">
+                                        <ul>
+                                            <li v-if="cameras.length === 0" class="empty">No cameras found</li>
+                                            <li v-for="camera in cameras">
+                                                <span v-if="camera.id == activeCameraId" :title="formatName(camera.name)" class="active"><input type="radio" class="align-middle mr-1" checked> {{ formatName(camera.name) }}</span>
+                                                <span v-if="camera.id != activeCameraId" :title="formatName(camera.name)">
+                                                    <a @click.stop="selectCamera(camera)"> <input type="radio" class="align-middle mr-1">@{{ formatName(camera.name) }}</a>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                        <!-- form scan -->
+                                        <form action="" method="POST" id="myForm">
+                                            <fieldset class="scheduler-border">
+                                                <legend class="scheduler-border"> Masukkan NIP / Scan QR Code </legend>
+                                                <input type="text" name="qrcode" id="code" autofocus>
+                                            </fieldset>
+                                        </form>
+                                        <?php echo $hehe; ?>
+
+                                    </div>
+                                    <div class="col-xs-12 preview-container camera">
+                                        <video id="preview" class="col-xs-12 thumbnail"></video>
+                                    </div>
+                                </div>
+                                <!-- scanner -->
+                            </center>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- #END# Exportable Table -->
-        </div>
     </section>
+
+
+    <script src="../../engine/qrcode/scanner/js/app.js"></script>
+    <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>
+    <script src="../../engine/qrcode/scanner/js/scanner.js"></script>
+
+
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>

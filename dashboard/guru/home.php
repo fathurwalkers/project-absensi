@@ -187,90 +187,60 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
+                <!-- Widgets -->
+                <div class="container">
+                    <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
+                        <div class="card">
+                            <div class="header bg-green">
+                                <h2>
+                                    INFO
+                                </h2>
+                            </div>
+                            <div class="body">
+                                <h4>Ada absen yang sedang berlangsung</h4>
+                                <p>terbuka untuk 5 menit lagi</p>
+                                <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h2>DASHBOARD</h2>
             </div>
 
-            <!-- Widgets -->
+
+
+            <!-- Exportable Table -->
             <div class="row clearfix">
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-pink hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">playlist_add_check</i>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                HISTORY ABSENSI
+                            </h2>
                         </div>
-                        <div class="content">
-                            <div class="text">NEW TASKS</div>
-                            <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-cyan hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">help</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW TICKETS</div>
-                            <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-light-green hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">forum</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW COMMENTS</div>
-                            <div class="number count-to" data-from="0" data-to="243" data-speed="1000" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="info-box bg-orange hover-expand-effect">
-                        <div class="icon">
-                            <i class="material-icons">person_add</i>
-                        </div>
-                        <div class="content">
-                            <div class="text">NEW VISITORS</div>
-                            <div class="number count-to" data-from="0" data-to="1225" data-speed="1000" data-fresh-interval="20"></div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Guru</th>
+                                            <th>NIP</th>
+                                            <th>Email</th>
+                                            <th>Alamat</th>
+                                            <th>Telepon</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Exportable Table -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                            HISTORY ABSENSI
-                        </h2>
-                    </div>
-                    <div class="body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Guru</th>
-                                        <th>NIP</th>
-                                        <th>Email</th>
-                                        <th>Alamat</th>
-                                        <th>Telepon</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- #END# Exportable Table -->
+            <!-- #END# Exportable Table -->
         </div>
     </section>
 
