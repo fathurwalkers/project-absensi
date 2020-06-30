@@ -142,6 +142,13 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                         <li class="header">Menu Navigasi</li>
 
                         <li class="focusOnActivate">
+                            <a href="home.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">home</i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
                             <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">person_pin</i>
                                 <span>Informasi Pengguna</span>
@@ -149,16 +156,16 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">home</i>
-                                <span>Home</span>
+                            <a href="detail_absen.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">analytics</i>
+                                <span>History Absensi</span>
                             </a>
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">edit</i>
-                                <span>Buat Absen</span>
+                            <a href="detail_guru.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">toc</i>
+                                <span>Data Guru</span>
                             </a>
                         </li>
 

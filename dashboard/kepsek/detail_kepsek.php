@@ -156,13 +156,6 @@ if (isset($_POST["generate"])) {
                         <li class="header">Menu Navigasi</li>
 
                         <li class="focusOnActivate">
-                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">person_pin</i>
-                                <span>Informasi Pengguna</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
                             <a href="home.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
                                 <span>Home</span>
@@ -170,9 +163,23 @@ if (isset($_POST["generate"])) {
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">date_range</i>
-                                <span>Buat Absen</span>
+                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">person_pin</i>
+                                <span>Informasi Pengguna</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="detail_absen.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">analytics</i>
+                                <span>History Absensi</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="detail_guru.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">toc</i>
+                                <span>Data Guru</span>
                             </a>
                         </li>
 

@@ -371,6 +371,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
             </div>
             <!-- #END# Exportable Table -->
         </div>
+
     </section>
 
     <!-- Jquery Core Js -->

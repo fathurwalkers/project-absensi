@@ -2,12 +2,12 @@
 session_start();
 require_once '../../engine/functions.php';
 
-if (!isset($_SESSION["admin"])) {
-    header("Location: ../../adminlogin.php");
+if (!isset($_SESSION["kepsek"])) {
+    header("Location: ../../login.php");
     exit;
 }
 
-$dataadmin = $_SESSION["dataadmin"];
+$datakepsek = $_SESSION["datakepsek"];
 $datadetail = $_SESSION["datadetail"];
 
 $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
@@ -17,12 +17,13 @@ $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat,
                     WHERE jabatan_id = '2'");
 
 
-$datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+$datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '1'");
 // $resultfetch = mysqli_fetch_assoc($dataguru);
+
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
@@ -134,7 +135,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <?= $datadetail["nama"]; ?>
                     </div>
-                    <div class="email"><?= $dataadmin["email"]; ?>
+                    <div class="email"><?= $datakepsek["email"]; ?>
                     </div>
                 </div>
             </div>
@@ -198,18 +199,34 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
+
+                <!-- Widgets -->
+                <div class="container">
+                    <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
+                        <div class="card">
+                            <div class="header bg-green">
+                                <h2>
+                                    INFO
+                                </h2>
+                            </div>
+                            <div class="body">
+                                <h4>Ada absen yang sedang berlangsung</h4>
+                                <p>terbuka untuk 5 menit lagi</p>
+                                <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <h2>DASHBOARD</h2>
             </div>
-
-            <!-- Widgets -->
-
             <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
                             <h2>
-                                HISTORI ABSENSI
+                                INFORMASI KEPALA SEKOLAH
                             </h2>
                         </div>
                         <div class="body">
@@ -219,27 +236,19 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                         <tr>
                                             <th>Nama</th>
                                             <th>NIP</th>
-                                            <th>Tanggal</th>
+                                            <th>Tanggal/Waktu</th>
                                             <th>Keterangan</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
-                                        ?>
+                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) { ?>
                                             <tr>
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">
-                                                    Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                </td>
+                                                <td>Hadir</td>
                                             </tr>
                                         <?php } ?>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -248,7 +257,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 </div>
             </div>
             <!-- #END# Exportable Table -->
-
         </div>
     </section>
 
