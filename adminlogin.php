@@ -11,7 +11,7 @@ if (isset($_POST['loginadmin'])) {
     $run = mysqli_query($conn, $query);
 
     if (!$run) {
-        echo "password username salah";
+        echo "<script>alert('Username/Password salah atau anda bukan Admin');</script>";
     } else {
         $result = mysqli_fetch_assoc($run);
 

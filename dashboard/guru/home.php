@@ -24,6 +24,13 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                     WHERE jabatan_id = '1'");
 // $resultfetch = mysqli_fetch_assoc($dataguru);
 
+$dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id 
+                    LEFT JOIN absensi ON user.id = absensi.user_id
+                    WHERE user.id = '{$guru['id']}'");
+
+
 ?>
 
 <!DOCTYPE html>
@@ -155,13 +162,6 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                             </a>
                         </li>
 
-                        <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">edit</i>
-                                <span>Buat Absen</span>
-                            </a>
-                        </li>
-
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -197,9 +197,11 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                                 </h2>
                             </div>
                             <div class="body">
-                                <h4>Ada absen yang sedang berlangsung</h4>
-                                <p>terbuka untuk 5 menit lagi</p>
-                                <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                                <h4>INFORMASI ABSENSI</h4>
+                                <p>Absensi terbuka pada jam 06:00 / 08:00</p>
+                                <p><button onclick="window.location.href='scanner.php'" class="btn btn-primary" id="cekaktif">
+                                        Klik disini untuk absen
+                                    </button></p>
                             </div>
                         </div>
                     </div>
@@ -223,16 +225,21 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
-                                            <th>Nama Guru</th>
+                                            <th>Nama</th>
                                             <th>NIP</th>
-                                            <th>Email</th>
-                                            <th>Alamat</th>
-                                            <th>Telepon</th>
-                                            <th>Action</th>
+                                            <th>Tanggal / Waktu</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        <?php while ($absenguru = mysqli_fetch_assoc($dataabsen)) { ?>
+                                            <tr>
+                                                <td><?= $absenguru["nama"]; ?></td>
+                                                <td><?= $absenguru["nip"]; ?></td>
+                                                <td><?= $absenguru["tanggal_absen"]; ?></td>
+                                                <td>Hadir</td>
+                                            </tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -243,6 +250,21 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
             <!-- #END# Exportable Table -->
         </div>
     </section>
+
+    <script>
+        setInterval(function() {
+            let currentTime = new Date().toLocaleTimeString("id-ID", {
+                timeZone: "Asia/Makassar"
+            });
+            let minTIme = "06.00";
+            let maxTime = "08.00";
+            if (currentTime >= minTIme && currentTime <= maxTime) {
+                document.getElementById("cekaktif").disabled = false;
+            } else {
+                document.getElementById("cekaktif").disabled = true;
+            }
+        }, 1000);
+    </script>
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>

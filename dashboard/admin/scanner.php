@@ -215,23 +215,16 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
+                            <a href="detail_guru.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">toc</i>
                                 <span>Data Guru</span>
                             </a>
                         </li>
 
                         <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
+                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">toc</i>
                                 <span>Data Kepala Sekolah</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">edit</i>
-                                <span>Buat Absen</span>
                             </a>
                         </li>
 

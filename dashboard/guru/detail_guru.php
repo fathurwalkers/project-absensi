@@ -169,13 +169,6 @@ if (isset($_POST["generate"])) {
                             </a>
                         </li>
 
-                        <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">date_range</i>
-                                <span>Buat Absen</span>
-                            </a>
-                        </li>
-
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -205,7 +198,7 @@ if (isset($_POST["generate"])) {
             </div>
         </div>
         <!-- USER DETAIL -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
             <div class="card">
                 <div class="header bg-green">
                     <h2>
@@ -218,32 +211,25 @@ if (isset($_POST["generate"])) {
                     <h5>Email : <?= $guru["email"]; ?></h5>
                     <h5>Nomor Telepon : <?= $datadetailguru["telepon"]; ?></h5>
                     <h5>Alamat : <?= $datadetailguru["alamat"]; ?></h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- QR CODE SECTION -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="header bg-green">
-                    <h2>
-                        Buat QRCODE
-                    </h2>
-                </div>
-                <div class="body">
+                    <br>
                     <center>
-                        <img src="../../assets/img/qrimage/<?= $datadetailguru["qrcode"] . ".png"; ?>" width="250px">
+                        <center>
+                            <img src="../../assets/img/qrimage/<?= $datadetailguru["qrcode"] . ".png"; ?>" width="250px">
 
-                        <form action="" method="post">
-                            <input type="hidden" name="qrguru" value="<?= $datadetailguru["nip"]; ?>">
-                            <br>
-                            <button type="submit" name="generate" class="btn btn-success">GENERATE</button>
-                        </form>
+                            <form action="" method="post">
+                                <input type="hidden" name="qrguru" value="<?= $datadetailguru["nip"]; ?>">
+                                <br>
+                                <button type="submit" name="generate" class="btn btn-success">GENERATE</button>
+                            </form>
 
+                        </center>
                     </center>
+                    <br>
                 </div>
             </div>
         </div>
+
+
 
         <!-- Exportable Table -->
         <!-- #END# Exportable Table -->

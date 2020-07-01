@@ -212,7 +212,7 @@ if (isset($_POST["generate"])) {
             </div>
         </div>
         <!-- USER DETAIL -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
             <div class="card">
                 <div class="header bg-green">
                     <h2>
@@ -225,22 +225,10 @@ if (isset($_POST["generate"])) {
                     <h5>Email : <?= $datakepsek["email"]; ?></h5>
                     <h5>Nomor Telepon : <?= $datalistkepsek["telepon"]; ?></h5>
                     <h5>Alamat : <?= $datalistkepsek["alamat"]; ?></h5>
-                </div>
-            </div>
-        </div>
-
-        <!-- QR CODE SECTION -->
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="header bg-green">
-                    <h2>
-                        Buat QRCODE
-                    </h2>
-                </div>
-                <div class="body">
+                    <br>
                     <center>
                         <img src="../../assets/img/qrimage/<?= $datalistkepsek["qrcode"]; ?>" width="250px">
-
+                        <br>
                         <form action="" method="post">
                             <input type="hidden" name="qrkepsek" value="<?= $datalistkepsek["nip"]; ?>">
                             <br>
@@ -248,6 +236,7 @@ if (isset($_POST["generate"])) {
                         </form>
 
                     </center>
+                    <br>
                 </div>
             </div>
         </div>

@@ -29,6 +29,12 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                     LEFT JOIN detail ON user.detail_id = detail.id 
                     LEFT JOIN absensi ON user.id = absensi.user_id ORDER BY tanggal_absen DESC");
 
+$dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id 
+                    LEFT JOIN absensi ON user.id = absensi.user_id  
+                    WHERE user.id = '2' ORDER BY tanggal_absen DESC");
+
 ?>
 
 <!DOCTYPE html>
@@ -201,32 +207,57 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
             <div class="block-header">
 
                 <!-- Widgets -->
-                <div class="container">
-                    <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                        <div class="card">
-                            <div class="header bg-green">
-                                <h2>
-                                    INFO
-                                </h2>
-                            </div>
-                            <div class="body">
-                                <h4>Ada absen yang sedang berlangsung</h4>
-                                <p>terbuka untuk 5 menit lagi</p>
-                                <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <h2>DASHBOARD</h2>
             </div>
+
+
             <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
                             <h2>
-                                INFORMASI KEPALA SEKOLAH
+                                HISTORY ABSEN KEPALA SEKOLAH
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>NIP</th>
+                                            <th>Tanggal/Waktu</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while ($absenonly = mysqli_fetch_assoc($dataabsenonly)) { ?>
+                                            <tr>
+                                                <td><?= $absenonly["nama"]; ?></td>
+                                                <td><?= $absenonly["nip"]; ?></td>
+                                                <td><?= $absenonly["tanggal_absen"]; ?></td>
+                                                <td>Hadir</td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Exportable Table -->
+
+
+            <!-- Exportable Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                HISTORY ABSEN GURU
                             </h2>
                         </div>
                         <div class="body">
@@ -257,6 +288,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 </div>
             </div>
             <!-- #END# Exportable Table -->
+
         </div>
     </section>
 

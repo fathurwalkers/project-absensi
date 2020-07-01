@@ -9,6 +9,10 @@ $dbname = 'absensiproject';
 
 $conn = mysqli_connect($dbhost, $dbusername, $dbpass, $dbname);
 
+
+date_default_timezone_set("Asia/Makassar");
+
+
 function query($query)
 {
     global $conn;

@@ -180,13 +180,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                             </a>
                         </li>
 
-                        <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">edit</i>
-                                <span>Buat Absen</span>
-                            </a>
-                        </li>
-
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -211,23 +204,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
     <section class="content">
         <div class="container-fluid">
-            <!-- Widgets -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                INFO
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <h4>Ada absen yang sedang berlangsung</h4>
-                            <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary" aria-disabled="true">Klik disini untuk absen</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="block-header">
                 <h2>DASHBOARD</h2>
             </div>

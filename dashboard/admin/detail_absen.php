@@ -146,16 +146,9 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                         <li class="header">Menu Navigasi</li>
 
                         <li class="focusOnActivate">
-                            <a href="home.php" class="toggled waves-effect waves-block">
+                            <a href="admin.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">home</i>
                                 <span>Home</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
-                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">person_pin</i>
-                                <span>Informasi Pengguna</span>
                             </a>
                         </li>
 
@@ -170,6 +163,13 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                             <a href="detail_guru.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">toc</i>
                                 <span>Data Guru</span>
+                            </a>
+                        </li>
+
+                        <li class="focusOnActivate">
+                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">toc</i>
+                                <span>Data Kepala Sekolah</span>
                             </a>
                         </li>
 
@@ -221,7 +221,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                             <th>NIP</th>
                                             <th>Tanggal</th>
                                             <th>Keterangan</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -233,9 +232,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
                                                 <td class="btn btn-success">
                                                     Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
                                                 </td>
                                             </tr>
                                         <?php } ?>

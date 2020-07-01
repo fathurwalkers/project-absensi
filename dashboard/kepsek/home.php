@@ -205,9 +205,11 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                 </h2>
                             </div>
                             <div class="body">
-                                <h4>Ada absen yang sedang berlangsung</h4>
-                                <p>terbuka untuk 5 menit lagi</p>
-                                <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
+                                <h4>INFORMASI ABSENSI</h4>
+                                <p>Absensi terbuka pada jam 06:00 / 08:00</p>
+                                <p><button onclick="window.location.href='scanner.php'" class="btn btn-primary" id="cekaktif">
+                                        Klik disini untuk absen
+                                    </button></p>
                             </div>
                         </div>
                     </div>
@@ -237,7 +239,6 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                             <th>Email</th>
                                             <th>Alamat</th>
                                             <th>Telepon</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -248,9 +249,6 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                                 <td><?= $kepsek["email"]; ?></td>
                                                 <td><?= $kepsek["alamat"]; ?></td>
                                                 <td><?= $kepsek["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -282,7 +280,6 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                             <th>Email</th>
                                             <th>Alamat</th>
                                             <th>Telepon</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -293,10 +290,6 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                                 <td><?= $guru["email"]; ?></td>
                                                 <td><?= $guru["alamat"]; ?></td>
                                                 <td><?= $guru["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                    <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
-                                                </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -309,6 +302,23 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
             <!-- #END# Exportable Table -->
         </div>
     </section>
+
+    <script>
+        setInterval(function() {
+            let currentTime = new Date().toLocaleTimeString("id-ID", {
+                timeZone: "Asia/Makassar"
+            });
+            let minTIme = "06.00";
+            let maxTime = "08.00";
+            if (currentTime >= minTIme && currentTime <= maxTime) {
+                document.getElementById("cekaktif").disabled = false;
+            } else {
+                document.getElementById("cekaktif").disabled = true;
+            }
+        }, 1000);
+    </script>
+
+
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>

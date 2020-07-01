@@ -180,13 +180,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                             </a>
                         </li>
 
-                        <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">edit</i>
-                                <span>Buat Absen</span>
-                            </a>
-                        </li>
-
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -221,9 +214,11 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                             </h2>
                         </div>
                         <div class="body">
-                            <h4>Ada absen yang sedang berlangsung</h4>
-                            <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary" aria-disabled="true">Klik disini untuk absen</a></p>
+                            <h4>INFORMASI ABSENSI</h4>
+                            <p>Absensi terbuka pada jam 06:00 / 08:00</p>
+                            <p><button onclick="window.location.href='scanner.php'" class="btn btn-primary" id="cekaktif">
+                                    Klik disini untuk absen
+                                </button></p>
                         </div>
                     </div>
                 </div>
@@ -236,7 +231,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
             <!-- Exportable Table -->
             <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-11 col-sm-11 col-xs-11">
                     <div class="card">
                         <div class="header">
                             <h2>
@@ -251,8 +246,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal</th>
-                                            <th>Keterangan</th>
-                                            <th>Action</th>
+                                            <!-- <th>Keterangan</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -262,12 +256,9 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">
+                                                <!-- <td class="btn btn-success align-center">
                                                     Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                </td>
+                                                </td> -->
                                             </tr>
                                         <?php } ?>
 
@@ -300,7 +291,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                             <th>Email</th>
                                             <th>Alamat</th>
                                             <th>Telepon</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -311,9 +301,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                                 <td><?= $kepsek["email"]; ?></td>
                                                 <td><?= $kepsek["alamat"]; ?></td>
                                                 <td><?= $kepsek["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -345,7 +332,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                             <th>Email</th>
                                             <th>Alamat</th>
                                             <th>Telepon</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -356,10 +342,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                                 <td><?= $guru["email"]; ?></td>
                                                 <td><?= $guru["alamat"]; ?></td>
                                                 <td><?= $guru["telepon"]; ?></td>
-                                                <td>
-                                                    <a href="edit.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                    <a href="delete.php?id_user=<?= $kepsek["id_kepsek"]; ?>" class="btn btn-danger">Delete</a>
-                                                </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -373,6 +355,23 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
         </div>
 
     </section>
+
+
+    <script>
+        setInterval(function() {
+            let currentTime = new Date().toLocaleTimeString("id-ID", {
+                timeZone: "Asia/Makassar"
+            });
+            let minTIme = "06.00";
+            let maxTime = "08.00";
+            if (currentTime >= minTIme && currentTime <= maxTime) {
+                document.getElementById("cekaktif").disabled = false;
+            } else {
+                document.getElementById("cekaktif").disabled = true;
+            }
+        }, 1000);
+    </script>
+
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
