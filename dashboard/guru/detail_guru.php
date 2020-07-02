@@ -10,18 +10,23 @@ if (!isset($_SESSION["guru"])) {
 $guru = $_SESSION["dataguru"];
 $datadetailguru = $_SESSION["datadetail"];
 
+$idguru = $datadetailguru['id'];
+
 if (isset($_POST["generate"])) {
 
     //$text = $_POST[];
 
     global $kepsekdata;
+    global $conn;
 
     $path = '../../assets/img/qrimage/';
     $file = $path . $guru["username"] . ".png";
 
-    $qrtext = $_POST["qrguru"];
+    $qrtext = $datadetailguru["nip"];
 
     $generated = QRcode::png($qrtext, $file, 'L', 10, 2);
+
+    // mysqli_query($conn, "INSERT INTO detail VALUES ()");
 }
 
 ?>
@@ -214,7 +219,7 @@ if (isset($_POST["generate"])) {
                     <br>
                     <center>
                         <center>
-                            <img src="../../assets/img/qrimage/<?= $datadetailguru["qrcode"] . ".png"; ?>" width="250px">
+                            <img src="../../assets/img/qrimage/<?= $guru['username'] . ".png"; ?>" width="250px">
 
                             <form action="" method="post">
                                 <input type="hidden" name="qrguru" value="<?= $datadetailguru["nip"]; ?>">
@@ -239,6 +244,9 @@ if (isset($_POST["generate"])) {
     </section>
     <!-- JS -->
     <!-- Jquery Core Js -->
+
+
+
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core Js -->

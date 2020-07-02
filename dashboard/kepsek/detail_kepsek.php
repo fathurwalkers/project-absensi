@@ -19,7 +19,7 @@ if (isset($_POST["generate"])) {
     $path = '../../assets/img/qrimage/';
     $file = $path . $datakepsek["username"] . ".png";
 
-    $qrtext = $_POST["qrkepsek"];
+    $qrtext = $datalistkepsek["nip"];
 
     $generated = QRcode::png($qrtext, $file, 'L', 10, 2);
 }

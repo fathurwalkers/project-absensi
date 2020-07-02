@@ -42,6 +42,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
     <title>Aplikasi E-Absen Guru</title>
     <!-- Favicon-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
     <!-- Google Fonts -->
@@ -62,11 +63,18 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
     <!-- Admin../../vendor/bsb Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../vendor/bsb/css/themes/all-themes.css" rel="stylesheet" />
+
+    <script src="../../vendor/rasterizejs/src/rasterize.js"></script>
+    <script src="../../vendor/rasterizejs/src/util.js"></script>
+
+    <script src="../../vendor/jspdfmaster/dist/jspdf.min.js"></script>
+
     <style>
         .legal {
             display: none !important;
         }
     </style>
+
 </head>
 
 <body class="theme-green">
@@ -212,36 +220,45 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
 
             <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                HISTORY ABSENSI
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>NIP</th>
-                                            <th>Tanggal / Waktu</th>
-                                            <th>Keterangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($absenguru = mysqli_fetch_assoc($dataabsen)) { ?>
+            <div id="printcontainer">
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+
+                                <h2>
+                                    HISTORY ABSENSI
+                                </h2>
+                            </div>
+                            <div class="body">
+                                <button onclick="export_div()" class="btn btn-info">
+                                    Print PDF
+                                </button>
+
+                                <br>
+                                <br>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                        <thead>
                                             <tr>
-                                                <td><?= $absenguru["nama"]; ?></td>
-                                                <td><?= $absenguru["nip"]; ?></td>
-                                                <td><?= $absenguru["tanggal_absen"]; ?></td>
-                                                <td>Hadir</td>
+                                                <th>Nama</th>
+                                                <th>NIP</th>
+                                                <th>Tanggal / Waktu</th>
+                                                <th>Keterangan</th>
                                             </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php while ($absenguru = mysqli_fetch_assoc($dataabsen)) { ?>
+                                                <tr>
+                                                    <td><?= $absenguru["nama"]; ?></td>
+                                                    <td><?= $absenguru["nip"]; ?></td>
+                                                    <td><?= $absenguru["tanggal_absen"]; ?></td>
+                                                    <td>Hadir</td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -264,6 +281,15 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 document.getElementById("cekaktif").disabled = true;
             }
         }, 1000);
+    </script>
+
+    <script>
+        function export_div() {
+            var pdf = new jsPDF("p", "pt", "a4");
+            pdf.addHTML($('#printcontainer'), 15, 15, function() {
+                pdf.save('laporan-absen-guru.pdf');
+            });
+        }
     </script>
 
     <!-- Jquery Core Js -->
@@ -290,6 +316,9 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
     <!-- Demo Js -->
     <script src="../../vendor/bsb/js/demo.js"></script>
+
+
+
 </body>
 
 </html>
