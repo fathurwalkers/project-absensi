@@ -314,7 +314,7 @@ $dataabsen2 = query("SELECT user.username, detail.nama, detail.nip, absensi.tang
                 timeZone: "Asia/Makassar"
             });
             let minTIme = "06.00";
-            let maxTime = "08.00";
+            let maxTime = "24.00";
             if (currentTime >= minTIme && currentTime <= maxTime) {
                 document.getElementById("cekaktif").disabled = false;
             } else {
