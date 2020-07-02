@@ -30,6 +30,11 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                     LEFT JOIN absensi ON user.id = absensi.user_id
                     WHERE user.id = '{$guru['id']}'");
 
+$dataabsen2 = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id 
+                    LEFT JOIN absensi ON user.id = absensi.user_id
+                    WHERE user.id = '{$guru['id']}'");
 
 ?>
 
@@ -64,10 +69,10 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
     <!-- Admin../../vendor/bsb Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../../vendor/bsb/css/themes/all-themes.css" rel="stylesheet" />
 
-    <script src="../../vendor/rasterizejs/src/rasterize.js"></script>
+    <!-- <script src="../../vendor/rasterizejs/src/rasterize.js"></script>
     <script src="../../vendor/rasterizejs/src/util.js"></script>
 
-    <script src="../../vendor/jspdfmaster/dist/jspdf.min.js"></script>
+    <script src="../../vendor/jspdfmaster/dist/jspdf.min.js"></script> -->
 
     <style>
         .legal {
@@ -220,10 +225,11 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 
 
             <!-- Exportable Table -->
-            <div id="printcontainer">
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="card">
+
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="printcontainer">
                             <div class="header">
 
                                 <h2>
@@ -231,9 +237,13 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                 </h2>
                             </div>
                             <div class="body">
-                                <button onclick="export_div()" class="btn btn-info">
+                                <!-- <button onclick="exportdiv()" class="btn btn-info">
                                     Print PDF
-                                </button>
+                                </button> -->
+
+                                <a href="cetak.php" target="_blank" class="btn btn-success">
+                                    Cetak PDF
+                                </a>
 
                                 <br>
                                 <br>
@@ -241,6 +251,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
                                             <tr>
+                                                <th>No</th>
                                                 <th>Nama</th>
                                                 <th>NIP</th>
                                                 <th>Tanggal / Waktu</th>
@@ -248,8 +259,11 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php while ($absenguru = mysqli_fetch_assoc($dataabsen)) { ?>
+                                            <?php
+                                            $i = 1;
+                                            while ($absenguru = mysqli_fetch_assoc($dataabsen)) { ?>
                                                 <tr>
+                                                    <td><?= $i++; ?></td>
                                                     <td><?= $absenguru["nama"]; ?></td>
                                                     <td><?= $absenguru["nip"]; ?></td>
                                                     <td><?= $absenguru["tanggal_absen"]; ?></td>
@@ -264,33 +278,11 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                     </div>
                 </div>
             </div>
+
             <!-- #END# Exportable Table -->
         </div>
+
     </section>
-
-    <script>
-        setInterval(function() {
-            let currentTime = new Date().toLocaleTimeString("id-ID", {
-                timeZone: "Asia/Makassar"
-            });
-            let minTIme = "06.00";
-            let maxTime = "08.00";
-            if (currentTime >= minTIme && currentTime <= maxTime) {
-                document.getElementById("cekaktif").disabled = false;
-            } else {
-                document.getElementById("cekaktif").disabled = true;
-            }
-        }, 1000);
-    </script>
-
-    <script>
-        function export_div() {
-            var pdf = new jsPDF("p", "pt", "a4");
-            pdf.addHTML($('#printcontainer'), 15, 15, function() {
-                pdf.save('laporan-absen-guru.pdf');
-            });
-        }
-    </script>
 
     <!-- Jquery Core Js -->
     <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
@@ -310,15 +302,47 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
     <!-- Jquery CountTo Plugin Js -->
     <script src="../../vendor/bsb/plugins/jquery-countto/jquery.countTo.js"></script>
 
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+
     <!-- Custom Js -->
     <script src="../../vendor/bsb/js/admin.js"></script>
-    <script src="../../vendor/bsb/js/pages/index.js"></script>
 
-    <!-- Demo Js -->
-    <script src="../../vendor/bsb/js/demo.js"></script>
+    <script>
+        setInterval(function() {
+            let currentTime = new Date().toLocaleTimeString("id-ID", {
+                timeZone: "Asia/Makassar"
+            });
+            let minTIme = "06.00";
+            let maxTime = "08.00";
+            if (currentTime >= minTIme && currentTime <= maxTime) {
+                document.getElementById("cekaktif").disabled = false;
+            } else {
+                document.getElementById("cekaktif").disabled = true;
+            }
+        }, 1000);
+    </script>
 
+    <script>
+        // function exportpdf() {
+        //     var pdfp = new jsPDF("p", "pt", "a4");
+        //     pdfp.addHTML($('#print2'), 15, 15, function() {
+        //         pdfp.save('laporan-absen-guru.pdf');
+        //     });
+        // }
 
+        // function exportpdf() {
+        //     var pdfp = new jsPDF("p", "pt", "a4");
+        //     pdfp.addHTML(document.getElementById('#printjs'), 15, 15);
+        //     pdfp.save('laporan-absen-guru.pdf');
+        // }
 
+        // function exportpdf() {
+        //     var pdfp = new jsPDF("p", "pt", "a4");
+        //     pdfp.fromHTML($('#printjs'), 15, 15);
+        //     pdfp.save('laporan-absen-guru.pdf');
+        // }
+    </script>
 </body>
 
 </html>
