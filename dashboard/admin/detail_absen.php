@@ -173,6 +173,13 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                             </a>
                         </li>
 
+                        <li class="focusOnActivate">
+                            <a href="tambahguru.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">add_circle_outline</i>
+                                <span>Tambah Guru</span>
+                            </a>
+                        </li>
+
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -230,7 +237,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">
+                                                <td class="text-center">
                                                     Hadir
                                                 </td>
                                             </tr>

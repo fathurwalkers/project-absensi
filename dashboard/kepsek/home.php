@@ -206,7 +206,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                             </div>
                             <div class="body">
                                 <h4>INFORMASI ABSENSI</h4>
-                                <p>Absensi terbuka pada jam 06:00 / 08:00</p>
+                                <!-- <p>Absensi terbuka pada jam 06:00 / 08:00</p> -->
                                 <p><button onclick="window.location.href='scanner.php'" class="btn btn-primary" id="cekaktif">
                                         Klik disini untuk absen
                                     </button></p>
@@ -304,18 +304,18 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
     </section>
 
     <script>
-        setInterval(function() {
-            let currentTime = new Date().toLocaleTimeString("id-ID", {
-                timeZone: "Asia/Makassar"
-            });
-            let minTIme = "06.00";
-            let maxTime = "08.00";
-            if (currentTime >= minTIme && currentTime <= maxTime) {
-                document.getElementById("cekaktif").disabled = false;
-            } else {
-                document.getElementById("cekaktif").disabled = true;
-            }
-        }, 1000);
+        // setInterval(function() {
+        //     let currentTime = new Date().toLocaleTimeString("id-ID", {
+        //         timeZone: "Asia/Makassar"
+        //     });
+        //     let minTIme = "06.00";
+        //     let maxTime = "08.00";
+        //     if (currentTime >= minTIme && currentTime <= maxTime) {
+        //         document.getElementById("cekaktif").disabled = false;
+        //     } else {
+        //         document.getElementById("cekaktif").disabled = true;
+        //     }
+        // }, 1000);
     </script>
 
 

@@ -3,13 +3,15 @@ session_start();
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once '../../engine/functions.php';
 
-if (!isset($_SESSION["guru"])) {
-    header("Location: ../../index.php");
-    exit;
+if (!isset($_SESSION["kepsek"])) {
+  header("Location: ../../login.php");
+  exit;
 }
 
-$guru = $_SESSION["dataguru"];
-$datadetailguru = $_SESSION["datadetail"];
+$now = date_create()->format('d-m-Y');
+
+$datakepsek = $_SESSION["datakepsek"];
+$datadetail = $_SESSION["datadetail"];
 
 $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
                     FROM user
@@ -18,7 +20,7 @@ $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat,
                     WHERE jabatan_id = '2'");
 
 
-$datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
+$datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
@@ -28,15 +30,17 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.id = absensi.user_id
-                    WHERE user.id = '{$guru['id']}'");
+                    LEFT JOIN absensi ON user.id = absensi.user_id ORDER BY tanggal_absen DESC");
 
-$dataabsen2 = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+$dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.id = absensi.user_id
-                    WHERE user.id = '{$guru['id']}'");
+                    LEFT JOIN absensi ON user.id = absensi.user_id  
+                    WHERE user.id = '2' ORDER BY tanggal_absen DESC");
 
+// border="1" cellpadding="10" cellspacing="0"
+
+// date('d F Y', strtotime($now))
 
 $mpdf = new \Mpdf\Mpdf();
 $html = '
@@ -44,15 +48,19 @@ $html = '
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
     <link rel="stylesheet" href="print.css">
     </head>
     <body>
     <center>
     <br>
-    <h1>Histori Absensi</h1>
+    <h1>LAPORAN ABSENSI<br>
+    SMA NEGERI 1 BUTON
+    </h1>
+    <p>
+    Baubau, ' . date('d F Y', strtotime($now)) . '
+    </p>
     <br>
-<table border="1" cellpadding="10" cellspacing="0">
+<table class="pertama" border="1" cellpadding="10" cellspacing="0">
 <thead>
     <tr>
         <th>No</th>
@@ -64,7 +72,7 @@ $html = '
 </thead>';
 $i = 1;
 foreach ($dataabsen as $absen) {
-    $html .= '<tr>
+  $html .= '<tr>
     <td>' . $i++ . '</td>
     <td>' . $absen["nama"] . '</td>
     <td>' . $absen["nip"] . '</td>
@@ -73,7 +81,10 @@ foreach ($dataabsen as $absen) {
     </tr>';
 }
 
-$html .= '</table></center></body></html>';
+$html .= '
+</table>
+</body>
+</html>';
 
 $mpdf->WriteHTML($html);
-$mpdf->Output('laporan-absensi.pdf', \Mpdf\Output\Destination::INLINE);
+$mpdf->Output('laporan-absensi-' . $now . '.pdf', \Mpdf\Output\Destination::INLINE);

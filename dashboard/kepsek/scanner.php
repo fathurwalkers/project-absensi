@@ -255,24 +255,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                 <h2>DASHBOARD</h2>
             </div>
 
-            <!-- Widgets -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                INFO
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <h4>Ada absen yang sedang berlangsung</h4>
-                            <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -291,7 +273,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                             <th>NIP</th>
                                             <th>Tanggal</th>
                                             <th>Keterangan</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -301,10 +282,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                                 <td><?= $absenks["nama"]; ?></td>
                                                 <td><?= $absenks["nip"]; ?></td>
                                                 <td><?= $absenks["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
+                                                <td class="">Hadir
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -336,7 +314,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                             <th>NIP</th>
                                             <th>Tanggal</th>
                                             <th>Keterangan</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -346,10 +323,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
+                                                <td class="">Hadir
                                                 </td>
                                             </tr>
                                         <?php } ?>

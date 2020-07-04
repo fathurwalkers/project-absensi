@@ -3,7 +3,7 @@ session_start();
 require_once '../../engine/functions.php';
 
 if (!isset($_SESSION["guru"])) {
-    header("Location: ../../login.php");
+    header("Location: ../../index.php");
     exit;
 }
 

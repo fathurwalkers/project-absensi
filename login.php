@@ -310,7 +310,7 @@ if (isset($_POST['login'])) {
                 <button type="submit" class="btn" name="login">LOGIN</button>
                 <div class="links">
                     <a href="adminlogin.php">Login Admin</a>
-                    <a href="loginguru.php">Login Guru</a>
+                    <a href="index.php">Login Guru</a>
                 </div>
             </form>
         </div>

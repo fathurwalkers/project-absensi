@@ -26,59 +26,44 @@ function query($query)
     return $result;
 }
 
+function tambahdata($data)
+{
+    global $conn;
 
-// function registrasi($data)
-// {
-//     global $conn;
+    $username_guru       = strtolower(stripslashes($data["usernameguru"]));
+    $password_guru       = mysqli_real_escape_string($conn, $data["passwordguru"]);
+    $email_guru          = htmlspecialchars($data["emailguru"]);
 
-//     $username       = strtolower(stripslashes($data["username"]));
-//     $namalengkap    = htmlspecialchars($data["namalengkap"]);
-//     $password       = mysqli_real_escape_string($conn, $data["password"]);
-//     $email          = htmlspecialchars($data["email"]);
-//     $nip            = htmlspecialchars($data["nip"]);
-//     $alamat         = htmlspecialchars($data["alamat"]);
-//     $telepon        = htmlspecialchars($data["telepon"]);
-//     // $file = "232323.png";
-//     $qr = "erer";
+    $namalengkap_guru    = htmlspecialchars($data["namalengkapguru"]);
+    $nip_guru            = htmlspecialchars($data["nipguru"]);
+    $telepon_guru        = htmlspecialchars($data["teleponguru"]);
+    $alamat_guru         = htmlspecialchars($data["alamatguru"]);
+    $jabatan_guru        = $data["jabatanguru"];
+    $role_guru           = $data["roleguru"];
+    $qr_guru             = strtolower(stripslashes($data["usernameguru"]));
+    $qr_guru            .= ".png";
 
-//     $checkusername = mysqli_query($conn, "SELECT username FROM user WHERE username = '$username'");
+    // $id_detailnew = 15;
 
-//     if (mysqli_fetch_assoc($checkusername)) {
-//         echo "<script>
-//                 alert('Username sudah terdaftar');
-//             </script>";
+    $cek_username = mysqli_query($conn, "SELECT username FROM user WHERE username = '$username_guru'");
 
-//         return false;
-//     }
-
-//     $password = password_hash($password, PASSWORD_DEFAULT);
-
-//     $sql = "INSERT INTO user VALUES(null, '$username', '$password', '$email', '$namalengkap', '$nip', '$qr', '$alamat', '$telepon')";
-
-//     mysqli_query($conn, $sql);
-
-//     return mysqli_affected_rows($conn);
-// }
+    if (mysqli_fetch_assoc($cek_username)) {
+        echo "<script>
+            alert('Username yang anda pilih sudah ada!');
+            </script>";
+        return false;
+    }
 
 
-// if (isset($_POST["generate"])) {
+    $query_detail = "INSERT INTO detail (nama, nip, alamat, telepon, qrcode) 
+                    VALUES ('$namalengkap_guru', '$nip_guru', '$alamat_guru', '$telepon_guru', '$qr_guru')";
+    $insert_detail = mysqli_query($conn, $query_detail);
 
-//     //$text = $_POST[];
+    $new_data_id = mysqli_insert_id($conn);
 
-//     $path = '../assets/img/qrimage/';
-//     $file = $path . uniqid() . ".png";
+    $query_user  = "INSERT INTO user (username, password, email, detail_id, jabatan_id, role_id) VALUES ('$username_guru', '$password_guru', '$email_guru', '$new_data_id', '$jabatan_guru', '$role_guru')";
 
-//     $qrtext = $_POST["id_kepsek"];
+    $insert_user = mysqli_query($conn, $query_user);
 
-//     $generated = QRcode::png($qrtext, $file, 'L', 10, 2);
-
-//     echo "<center><img src='" . $file . "'></center>";
-// }
-
-
-// function loginadmin($data)
-// {
-//     global $conn;
-
-//     $query = "SELECT admin"
-// }
+    return mysqli_affected_rows($conn);
+}

@@ -228,6 +228,13 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                             </a>
                         </li>
 
+                        <li class="focusOnActivate">
+                            <a href="tambahguru.php" class="toggled waves-effect waves-block">
+                                <i class="material-icons">add_circle_outline</i>
+                                <span>Tambah Guru</span>
+                            </a>
+                        </li>
+
                     </ul>
                     <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
                     <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -254,24 +261,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
         <div class="container-fluid">
             <div class="block-header">
                 <h2>DASHBOARD</h2>
-            </div>
-
-            <!-- Widgets -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                INFO
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <h4>Ada absen yang sedang berlangsung</h4>
-                            <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Exportable Table -->

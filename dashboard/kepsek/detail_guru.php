@@ -213,6 +213,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Nama Guru</th>
                                             <th>NIP</th>
                                             <th>Email</th>
@@ -221,8 +222,10 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $no3 = 1; ?>
                                         <?php while ($guru = mysqli_fetch_assoc($dataguru)) { ?>
                                             <tr>
+                                                <td class="text-center"><?= $no3++; ?></td>
                                                 <td><?= $guru["nama"]; ?></td>
                                                 <td><?= $guru["nip"]; ?></td>
                                                 <td><?= $guru["email"]; ?></td>

@@ -222,10 +222,19 @@ $dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.t
                             </h2>
                         </div>
                         <div class="body">
+
+                            <a href="cetak.php" target="_blank" class="btn btn-success">
+                                Cetak PDF
+                            </a>
+                            <br>
+                            <br>
+
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal/Waktu</th>
@@ -233,8 +242,10 @@ $dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.t
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $no2 = 1; ?>
                                         <?php while ($absenonly = mysqli_fetch_assoc($dataabsenonly)) { ?>
                                             <tr>
+                                                <td class="text-center"><?= $no2++; ?></td>
                                                 <td><?= $absenonly["nama"]; ?></td>
                                                 <td><?= $absenonly["nip"]; ?></td>
                                                 <td><?= $absenonly["tanggal_absen"]; ?></td>
@@ -261,10 +272,16 @@ $dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.t
                             </h2>
                         </div>
                         <div class="body">
+                            <a href="cetak2.php" target="_blank" class="btn btn-success">
+                                Cetak PDF
+                            </a>
+                            <br>
+                            <br>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal/Waktu</th>
@@ -272,8 +289,10 @@ $dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.t
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $no = 1; ?>
                                         <?php while ($absen = mysqli_fetch_assoc($dataabsen)) { ?>
                                             <tr>
+                                                <td class="text-center"><?= $no++; ?></td>
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
