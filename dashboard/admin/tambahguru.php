@@ -327,7 +327,7 @@ $guru_jabatan = mysqli_query($conn, $query_jabatan);
 
                                 <div class="row clearfix">
                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label for="alamatguru">Akses Jabatan</label>
+                                        <label for="alamatguru">Jabatan :</label>
                                     </div>
                                     <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                         <div class="form-group">
@@ -362,7 +362,7 @@ $guru_jabatan = mysqli_query($conn, $query_jabatan);
 
                                 <div class="row clearfix">
                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                                        <label for="alamatguru">Akses Login</label>
+                                        <label for="alamatguru">Login sebagai :</label>
                                     </div>
                                     <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                         <div class="form-group">

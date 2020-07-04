@@ -234,6 +234,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">No.</th>
                                             <th>Nama Kepsek</th>
                                             <th>NIP</th>
                                             <th>Email</th>
@@ -242,8 +243,10 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $nomor = 1; ?>
                                         <?php while ($kepsek = mysqli_fetch_assoc($datalistkepsek)) { ?>
                                             <tr>
+                                                <td class="text-center"><?= $nomor++; ?></td>
                                                 <td><?= $kepsek["nama"]; ?></td>
                                                 <td><?= $kepsek["nip"]; ?></td>
                                                 <td><?= $kepsek["email"]; ?></td>
@@ -275,6 +278,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">No.</th>
                                             <th>Nama Guru</th>
                                             <th>NIP</th>
                                             <th>Email</th>
@@ -283,8 +287,10 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $nomor2 = 1; ?>
                                         <?php while ($guru = mysqli_fetch_assoc($dataguru)) { ?>
                                             <tr>
+                                                <td class="text-center"><?= $nomor2++; ?></td>
                                                 <td><?= $guru["nama"]; ?></td>
                                                 <td><?= $guru["nip"]; ?></td>
                                                 <td><?= $guru["email"]; ?></td>

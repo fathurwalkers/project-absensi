@@ -68,11 +68,13 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
     $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
     $query = mysqli_query($conn, $insert);
     $_SESSION["salah"] = $tanggal;
-    header("Location: ../../dashboard/admin/admin.php");
+    $_SESSION["pesan_absen"] = true;
+    header("Location: ../../dashboard/admin/scanner.php");
     exit;
 } else {
     $hehe = "Belum ada data";
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -273,29 +275,41 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                             </h2>
                         </div>
                         <div class="body">
+
+                            <?php if (isset($_SESSION["pesan_absen"]) === true) {
+                                unset($_SESSION["pesan_absen"]);
+                                echo "<script>
+                                    alert('Proses Absensi Berhasil !');
+                                    </script>";
+                            }
+                            // else {
+                            //     echo "<script>
+                            //         alert('Proses Absensi Gagal !');
+                            //         </script>";
+                            // }
+                            ?>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">No.</th>
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal</th>
                                             <th>Keterangan</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $nomor = 1; ?>
                                         <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
                                         ?>
                                             <tr>
+                                                <td class="text-center"><?= $nomor++; ?></td>
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
-                                                </td>
+                                                <td class="text-center">Hadir</td>
                                             </tr>
                                         <?php } ?>
 
@@ -352,6 +366,8 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
             </div>
     </section>
 
+    <?php // unset($_SESSION["pesan_absen"]); 
+    ?>
 
     <script src="../../engine/qrcode/scanner/js/app.js"></script>
     <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>

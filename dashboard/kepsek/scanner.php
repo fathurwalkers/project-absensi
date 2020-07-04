@@ -11,6 +11,8 @@ if (!isset($_SESSION["kepsek"])) {
 $datakepseksesi = $_SESSION["datakepsek"];
 $datadetail = $_SESSION["datadetail"];
 
+// $idkepsek = $datakepseksesi["id"];
+
 $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id
@@ -27,53 +29,40 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                     WHERE jabatan_id = '1'");
 // $resultfetch = mysqli_fetch_assoc($dataguru);
 
-$dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
-                    FROM user
-                    LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.detail_id = absensi.user_id
-                    WHERE role_id = '2'");
+// $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
+//                     FROM user
+//                     LEFT JOIN detail ON user.detail_id = detail.id 
+//                     LEFT JOIN absensi ON user.detail_id = absensi.user_id
+//                     WHERE role_id = '2'");
 
 $dataabsenkepsek = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                         FROM user
                         LEFT JOIN detail ON user.detail_id = detail.id 
-                        LEFT JOIN absensi ON user.detail_id = absensi.user_id
-                        WHERE role_id = '3'");
+                        LEFT JOIN absensi ON user.id = absensi.user_id
+                        WHERE user.id = '{$datakepseksesi['id']}'");
+
+// GURU ORI 
+// LEFT JOIN detail ON user.detail_id = detail.id 
+// LEFT JOIN absensi ON user.id = absensi.user_id
+
+// KEPSEK ORI 
+// LEFT JOIN detail ON user.detail_id = detail.id 
+// LEFT JOIN absensi ON user.detail_id = absensi.user_id
+
+
 
 ?>
 <?php
-// if (!empty($_POST['qrcode'])) {
-//     global $conn;
-//     $qrcode = $_POST['qrcode'];
-//     // $array = explode('|', $qrcode);
-//     // $dataadmin = $_SESSION["dataadmin"];
-//     // $datadetail = $_SESSION["datadetail"];
-//     $nip = $datadetail["nip"];
-//     $idadmin = $datadetail["id"];
-//     $sqlmatch = "SELECT nip FROM detail WHERE nip = '$qrcode' LIMIT 1";
-//     $match = mysqli_query($conn, $sqlmatch);
-
-//     if (!mysqli_num_rows($match)) {
-//         header("Location: ../../dashboard/admin/scanner.php");
-//     } else {
-//         $fetchqr = mysqli_fetch_assoc($match);
-//         $_SESSION["cekqrcode"] =  $fetchqr;
-//         header("Location: ../../dashboard/admin/scanner.php");
-//         exit;
-//     }
-
-
-//     header("Location: ../../dashboard/admin/scanner.php");
-//     // }
-// }
 if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
     // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
     global $conn;
-    $id = $datakepseksesi["id"];
+    $idkepsek = $datakepseksesi['id'];
     date_default_timezone_set("Asia/Makassar");
     $tanggal = date('Y-m-d H:i:s', strtotime('now'));
-    $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
+    $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$idkepsek', '$tanggal')";
     $query = mysqli_query($conn, $insert);
     $_SESSION["salah"] = $tanggal;
+    $_SESSION["pesan_absen"] = true;
     header("Location: ../../dashboard/kepsek/scanner.php");
     exit;
 } else {
@@ -121,23 +110,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
 </head>
 
 <body class="theme-green">
-    <!-- Page Loader -->
-    <!-- <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Please wait...</p>
-        </div>
-    </div> -->
-    <!-- #END# Page Loader -->
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
@@ -265,25 +237,41 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                             </h2>
                         </div>
                         <div class="body">
+
+                            <?php if (!empty($_SESSION["pesan_absen"])) {
+                                unset($_SESSION["pesan_absen"]);
+                                echo "<script>
+                                    alert('Proses Absensi Berhasil !');
+                                    </script>";
+                            }
+                            // } else {
+                            //     echo "<script>
+                            //         alert('Proses Absensi Gagal !');
+                            //         </script>";
+                            // }
+                            ?>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">No.</th>
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal</th>
-                                            <th>Keterangan</th>
+                                            <th class="text-center">Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $nomor3 = 1; ?>
                                         <?php while ($absenks = mysqli_fetch_assoc($dataabsenkepsek)) {
                                         ?>
                                             <tr>
+                                                <td class="text-center"><?= $nomor3++; ?></td>
                                                 <td><?= $absenks["nama"]; ?></td>
                                                 <td><?= $absenks["nip"]; ?></td>
                                                 <td><?= $absenks["tanggal_absen"]; ?></td>
-                                                <td class="">Hadir
-                                                </td>
+                                                <td class="text-center">Hadir</td>
                                             </tr>
                                         <?php } ?>
 
@@ -296,46 +284,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
             </div>
             <!-- #END# Exportable Table -->
 
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                HISTORI ABSENSI
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama</th>
-                                            <th>NIP</th>
-                                            <th>Tanggal</th>
-                                            <th>Keterangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
-                                        ?>
-                                            <tr>
-                                                <td><?= $absen["nama"]; ?></td>
-                                                <td><?= $absen["nip"]; ?></td>
-                                                <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="">Hadir
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Exportable Table -->
             <div class="container">
                 <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
                     <div class="card">

@@ -8,6 +8,8 @@ if (!isset($_SESSION["kepsek"])) {
     exit;
 }
 
+$now = date_create()->format('d-m-Y');
+
 $datakepsek = $_SESSION["datakepsek"];
 $datadetail = $_SESSION["datadetail"];
 
@@ -28,13 +30,13 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.id = absensi.user_id ORDER BY tanggal_absen DESC");
+                    LEFT JOIN absensi ON user.id = absensi.user_id WHERE role_id = '2' ORDER BY tanggal_absen DESC");
 
 $dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
                     LEFT JOIN absensi ON user.id = absensi.user_id  
-                    WHERE user.id = '2' ORDER BY tanggal_absen DESC");
+                    WHERE role_id = '3' ORDER BY tanggal_absen DESC");
 
 
 $mpdf = new \Mpdf\Mpdf();
@@ -43,21 +45,19 @@ $html = '
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
     <link rel="stylesheet" href="print.css">
     </head>
     <body>
     <center>
     <br>
-    <h2>Data History Absensi<br>
-    SMA BRING ME THE HORIZON
-    </h2>
-
+    <h1>LAPORAN ABSENSI<br>
+    SMA NEGERI 1 BUTON
+    </h1>
     <p>
-    Rekap Histori Absensi tanggal' . now() . '
+    Baubau, ' . date('d F Y', strtotime($now)) . '
     </p>
     <br>
-<table border="1" cellpadding="10" cellspacing="0">
+<table class="pertama" border="1" cellpadding="10" cellspacing="0">
 <thead>
     <tr>
         <th>No</th>
@@ -81,4 +81,4 @@ foreach ($dataabsenonly as $absen) {
 $html .= '</table></center></body></html>';
 
 $mpdf->WriteHTML($html);
-$mpdf->Output('laporan-absensi.pdf', \Mpdf\Output\Destination::INLINE);
+$mpdf->Output('laporan-absensi-KEPALA_SEKOLAH-' . $now . '.pdf', \Mpdf\Output\Destination::INLINE);

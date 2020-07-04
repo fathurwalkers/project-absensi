@@ -227,7 +227,7 @@ if (isset($_POST["generate"])) {
                     <h5>Alamat : <?= $datalistkepsek["alamat"]; ?></h5>
                     <br>
                     <center>
-                        <img src="../../assets/img/qrimage/<?= $datalistkepsek["qrcode"]; ?>" width="250px">
+                        <img src="../../assets/img/qrimage/<?= $datakepsek["username"] . ".png"; ?>" width="250px">
                         <br>
                         <form action="" method="post">
                             <input type="hidden" name="qrkepsek" value="<?= $datalistkepsek["nip"]; ?>">

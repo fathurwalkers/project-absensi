@@ -30,7 +30,7 @@ $datalistkepsek = query("SELECT user.username, detail.nama, detail.nip, detail.a
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
-                    LEFT JOIN absensi ON user.id = absensi.user_id ORDER BY tanggal_absen DESC");
+                    LEFT JOIN absensi ON user.id = absensi.user_id WHERE role_id = '2' ORDER BY tanggal_absen DESC");
 
 $dataabsenonly = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
@@ -87,4 +87,4 @@ $html .= '
 </html>';
 
 $mpdf->WriteHTML($html);
-$mpdf->Output('laporan-absensi-' . $now . '.pdf', \Mpdf\Output\Destination::INLINE);
+$mpdf->Output('laporan-absensi-GURU-' . $now . '.pdf', \Mpdf\Output\Destination::INLINE);

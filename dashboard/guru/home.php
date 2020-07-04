@@ -211,7 +211,7 @@ $dataabsen2 = query("SELECT user.username, detail.nama, detail.nip, absensi.tang
                             </div>
                             <div class="body">
                                 <h4>INFORMASI ABSENSI</h4>
-                                <p>Absensi terbuka pada jam 06:00 / 08:00</p>
+                                <!-- <p>Absensi terbuka pada jam 06:00 / 08:00</p> -->
                                 <p><button onclick="window.location.href='scanner.php'" class="btn btn-primary" id="cekaktif">
                                         Klik disini untuk absen
                                     </button></p>
@@ -251,11 +251,11 @@ $dataabsen2 = query("SELECT user.username, detail.nama, detail.nip, absensi.tang
                                     <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
+                                                <th class="text-center">No</th>
                                                 <th>Nama</th>
                                                 <th>NIP</th>
                                                 <th>Tanggal / Waktu</th>
-                                                <th>Keterangan</th>
+                                                <th class="text-center">Keterangan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -263,11 +263,11 @@ $dataabsen2 = query("SELECT user.username, detail.nama, detail.nip, absensi.tang
                                             $i = 1;
                                             while ($absenguru = mysqli_fetch_assoc($dataabsen)) { ?>
                                                 <tr>
-                                                    <td><?= $i++; ?></td>
+                                                    <td class="text-center"><?= $i++; ?></td>
                                                     <td><?= $absenguru["nama"]; ?></td>
                                                     <td><?= $absenguru["nip"]; ?></td>
                                                     <td><?= $absenguru["tanggal_absen"]; ?></td>
-                                                    <td>Hadir</td>
+                                                    <td class="text-center">Hadir</td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

@@ -24,11 +24,13 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
     // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
     global $conn;
     $id = $dataguru["id"];
+    // $iddetail = $datadetail["id"];
     date_default_timezone_set("Asia/Makassar");
     $tanggal = date('Y-m-d H:i:s', strtotime('now'));
     $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
     $query = mysqli_query($conn, $insert);
     $_SESSION["query"] = $query;
+    $_SESSION["pesan_absen"] = true;
     header("Location: ../../dashboard/guru/scanner.php");
     exit;
 } else {
@@ -206,24 +208,6 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                 <h2>DASHBOARD</h2>
             </div>
 
-            <!-- Widgets -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                INFO
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <h4>Ada absen yang sedang berlangsung</h4>
-                            <p>terbuka untuk 5 menit lagi</p>
-                            <p><a href="scanner.php" class="btn btn-primary">Klik disini untuk absen</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Exportable Table -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -234,28 +218,41 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                             </h2>
                         </div>
                         <div class="body">
+
+                            <?php if (!empty($_SESSION["pesan_absen"])) {
+                                unset($_SESSION["pesan_absen"]);
+                                echo "<script>
+                                    alert('Proses Absensi Berhasil !');
+                                    </script>";
+                            }
+                            // } else {
+                            //     echo "<script>
+                            //         alert('Proses Absensi Gagal !');
+                            //         </script>";
+                            // }
+                            ?>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">No.</th>
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal</th>
-                                            <th>Keterangan</th>
-                                            <th>Action</th>
+                                            <th class="text-center">Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $nomor = 1; ?>
                                         <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
                                         ?>
                                             <tr>
+                                                <td class="text-center"><?= $nomor++; ?></td>
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="btn btn-success">Hadir
-                                                </td>
-                                                <td>
-                                                    <a href="edit.php?id=<?= $kepsek["jabatan_id"]; ?>" class="btn btn-info">Edit</a><?= " "; ?>
+                                                <td class="text-center">Hadir
                                                 </td>
                                             </tr>
                                         <?php } ?>
