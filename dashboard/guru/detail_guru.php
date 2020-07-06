@@ -125,9 +125,6 @@ if (isset($_POST["generate"])) {
                     </li>
                     <!-- #END# Call Search -->
 
-                    <li class="pull-right">
-                        <a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a>
-                    </li>
                     <!-- LOGOUT -->
                     <li>
                         <a href="logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>

@@ -37,7 +37,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
-    <title>Aplikasi E-Absen Guru</title>
+    <title class="print">Aplikasi E-Absen Guru</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
@@ -64,8 +64,23 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
             display: none !important;
         }
 
-        .toright {
-            float: left;
+        section.content {
+            margin: 25px 25px 25px 25px !important;
+        }
+
+        .block-header h2 {
+            text-align: center;
+            font-size: 40px;
+        }
+
+        @media print {
+            title {
+                display: none;
+            }
+
+            button {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -88,142 +103,11 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
         </div>
     </div>
     <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
-    <!-- #END# Overlay For Sidebars -->
 
-    <!-- Top Bar -->
-    <nav class="navbar">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">E-ABSEN #TBR</a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Call Search -->
-                    <li>
-                        <a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a>
-                    </li>
-                    <!-- #END# Call Search -->
 
-                    <li>
-                        <a href="logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- #Top Bar -->
-    <section>
-        <!-- Left Sidebar -->
-        <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="image">
-                    <img src="https://cdn.iconscout.com/icon/free/png-256/user-avatar-contact-portfolio-personal-portrait-profile-1-5182.png" width="48" height="48" alt="User" />
-                </div>
-                <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?= $datadetail["nama"]; ?>
-                    </div>
-                    <div class="email"><?= $dataadmin["email"]; ?>
-                    </div>
-                </div>
-            </div>
-            <!-- #User Info -->
-            <!-- Menu -->
-            <div class="menu">
-                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 698px;">
-                    <ul class="list" style="overflow: hidden; width: auto; height: 698px;">
-                        <li class="header">Menu Navigasi</li>
-
-                        <!-- <li class="focusOnActivate">
-                            <a href="" class="toggled waves-effect waves-block">
-                                <i class="material-icons">person_pin</i>
-                                <span>Informasi Pengguna</span>
-                            </a>
-                        </li> -->
-
-                        <li class="focusOnActivate">
-                            <a href="admin.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">home</i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
-                            <a href="detail_absen.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">analytics</i>
-                                <span>Riwayat Absensi</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
-                            <a href="detail_guru.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">toc</i>
-                                <span>Daftar Guru</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
-                            <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">toc</i>
-                                <span>Daftar Kepala Sekolah</span>
-                            </a>
-                        </li>
-
-                        <li class="focusOnActivate">
-                            <a href="tambahguru.php" class="toggled waves-effect waves-block">
-                                <i class="material-icons">add_circle_outline</i>
-                                <span>Tambah Pengguna</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 523.875px;"></div>
-                    <div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-                </div>
-            </div>
-            <!-- #Menu -->
-            <!-- Footer -->
-            <div class="legal">
-                <div class="copyright">
-                    &copy; 2016 - 2017
-                    <a href="javascript:void(0);">Admin../../vendor/bsb - Material Design</a>.
-                </div>
-                <div class="version"><b>Version: </b> 1.0.5</div>
-            </div>
-            <!-- #Footer -->
-        </aside>
-        <!-- #END# Left Sidebar -->
-        <!-- Right Sidebar -->
-
-        <!-- #END# Right Sidebar -->
-    </section>
 
     <section class="content">
         <div class="container-fluid">
-            <!-- Widgets -->
-            <div class="container">
-                <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="header bg-green">
-                            <h2>
-                                INFO
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <h4>Proses ke Halaman Absensi</h4>
-                            <!-- <p>Absensi terbuka pada jam 06:00 / 08:00</p> -->
-                            <p><button onclick="window.location.href='scanner.php'" class="btn btn-primary" id="cekaktif">
-                                    Klik disini untuk absen
-                                </button></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="block-header">
                 <h2>DASHBOARD</h2>
             </div>
@@ -235,21 +119,12 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 <div class="col-lg-12 col-md-11 col-sm-11 col-xs-11">
                     <div class="card">
                         <div class="header">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h2>
-                                        RiWAYAT ABSENSI
-                                    </h2>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="right">
-                                        <button class="btn btn-primary" id="referer" target="_blank" onclick="window.location.href='/absensiproject2/dashboard/admin/print.php'">Cetak Riwayat Absen
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            <h2>
+                                RiWAYAT ABSENSI
+                            </h2>
                         </div>
                         <div class="body">
+                            <button class="btn btn-primary" onclick="window.print()">Print this page</button><br><br>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>

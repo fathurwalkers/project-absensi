@@ -31,7 +31,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
                     LEFT JOIN absensi ON user.detail_id = absensi.user_id
-                    WHERE role_id = '1'");
+                    WHERE role_id = '1' ORDER BY tanggal_absen DESC");
 
 ?>
 <?php
@@ -212,28 +212,28 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                         <li class="focusOnActivate">
                             <a href="detail_absen.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">analytics</i>
-                                <span>History Absensi</span>
+                                <span>Riwayat Absensi</span>
                             </a>
                         </li>
 
                         <li class="focusOnActivate">
                             <a href="detail_guru.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">toc</i>
-                                <span>Data Guru</span>
+                                <span>Daftar Guru</span>
                             </a>
                         </li>
 
                         <li class="focusOnActivate">
                             <a href="detail_kepsek.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">toc</i>
-                                <span>Data Kepala Sekolah</span>
+                                <span>Daftar Kepala Sekolah</span>
                             </a>
                         </li>
 
                         <li class="focusOnActivate">
                             <a href="tambahguru.php" class="toggled waves-effect waves-block">
                                 <i class="material-icons">add_circle_outline</i>
-                                <span>Tambah Guru</span>
+                                <span>Tambah Pengguna</span>
                             </a>
                         </li>
 
@@ -271,7 +271,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                     <div class="card">
                         <div class="header">
                             <h2>
-                                HISTORI ABSENSI
+                                RIWAYAT ABSENSI
                             </h2>
                         </div>
                         <div class="body">
