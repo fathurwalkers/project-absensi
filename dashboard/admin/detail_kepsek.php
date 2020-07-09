@@ -22,6 +22,13 @@ $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alama
                     LEFT JOIN detail ON user.detail_id = detail.id
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '1'");
+
+$datakepsek2 = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email, detail.qrcode
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '1'");
+
 // $resultfetch = mysqli_fetch_assoc($dataguru);
 $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tanggal_absen
                     FROM user
@@ -254,6 +261,24 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 </div>
             </div>
             <!-- #END# Exportable Table -->
+
+            <div class="row">
+                <?php while ($kepsek2 = mysqli_fetch_assoc($datakepsek2)) { ?>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="card">
+                            <div class="body bg-white">
+                                <center>
+
+                                    <img src="../../assets/img/qrimage/<?= $kepsek2["qrcode"]; ?>" width="250px">
+                                    <h4><?= $kepsek2["nama"]; ?></h4>
+                                    <span><?= $kepsek2["nip"]; ?></span>
+                                </center>
+
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
 
         </div>
     </section>

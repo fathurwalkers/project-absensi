@@ -43,6 +43,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 ?>
 <?php
 
+// FUNGSI VERIFIKASI QR CODE DAN INSERT DATA ABSEN BERDASARKAN ID DARI USER YANG TER FETCH
 if (!empty($_POST['qrcode'])) {
     // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
     global $conn;
