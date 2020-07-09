@@ -327,8 +327,20 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                     </div>
                 </div>
             </div>
+
+
+
+
+
     </section>
 
+
+
+
+
+
+    <!-- Jquery Core Js -->
+    <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
 
     <script src="../../engine/qrcode/scanner/js/app.js"></script>
     <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>
@@ -336,8 +348,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
 
 
 
-    <!-- Jquery Core Js -->
-    <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
+
 
     <!-- Bootstrap Core Js -->
     <script src="../../vendor/bsb/plugins/bootstrap/js/bootstrap.js"></script>

@@ -104,7 +104,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">E-ABSEN #TBR</a>
+                <a class="navbar-brand" href="index.html">E-ABSEN</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -224,16 +224,19 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                                 <table class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">No.</th>
                                             <th>Nama</th>
                                             <th>NIP</th>
                                             <th>Tanggal</th>
-                                            <th>Keterangan</th>
+                                            <th class="text-center">Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $no = 1; ?>
                                         <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
                                         ?>
                                             <tr>
+                                                <td class="text-center"><?= $no++; ?></td>
                                                 <td><?= $absen["nama"]; ?></td>
                                                 <td><?= $absen["nip"]; ?></td>
                                                 <td><?= $absen["tanggal_absen"]; ?></td>

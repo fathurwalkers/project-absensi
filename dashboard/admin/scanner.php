@@ -17,6 +17,13 @@ $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat,
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '2'");
 
+$dataguru2 = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email, user.id
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '2'");
+
+
 // WHERE jabatan_id = '2'");
 
 
@@ -31,10 +38,57 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                     FROM user
                     LEFT JOIN detail ON user.detail_id = detail.id 
                     LEFT JOIN absensi ON user.detail_id = absensi.user_id
-                    WHERE role_id = '1' ORDER BY tanggal_absen DESC");
+                    ORDER BY tanggal_absen DESC");
 
 ?>
 <?php
+
+if (!empty($_POST['qrcode'])) {
+    // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
+    global $conn;
+    global $dataguru2;
+    $scanres = $_POST['qrcode'];
+    $sqlnip = "SELECT user.id, user.username, detail.nama, detail.nip 
+                FROM user
+                LEFT JOIN detail ON user.detail_id = detail.id WHERE nip = '$scanres'";
+    $execute = mysqli_query($conn, $sqlnip);
+    if (mysqli_num_rows($execute) === 1) {
+        $fetching = mysqli_fetch_assoc($execute);
+        $ids = $fetching["id"];
+        // var_dump($fetching);
+        // echo "<br>";
+        // var_dump($idfetch);
+        // die;
+        date_default_timezone_set("Asia/Makassar");
+        $tanggal = date('Y-m-d H:i:s', strtotime('now'));
+        $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$ids', '$tanggal')";
+        $query = mysqli_query($conn, $insert);
+        $_SESSION["salah"] = $tanggal;
+        $_SESSION["pesan_absen"] = true;
+        header("Location: ../../dashboard/admin/detail_absen.php");
+        exit;
+    }
+}
+
+
+
+// if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
+//     // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
+//     global $conn;
+//     $id = $datadetail["id"];
+//     date_default_timezone_set("Asia/Makassar");
+//     $tanggal = date('Y-m-d H:i:s', strtotime('now'));
+//     $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
+//     $query = mysqli_query($conn, $insert);
+//     $_SESSION["salah"] = $tanggal;
+//     $_SESSION["pesan_absen"] = true;
+//     header("Location: ../../dashboard/admin/scanner.php");
+//     exit;
+// } else {
+//     $hehe = "Belum ada data";
+// }
+
+
 // if (!empty($_POST['qrcode'])) {
 //     global $conn;
 //     $qrcode = $_POST['qrcode'];
@@ -59,22 +113,6 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
 //     header("Location: ../../dashboard/admin/scanner.php");
 //     // }
 // }
-if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
-    // JADI DIDALAM SINI KITA INSERT DATA KE TABEL ABSEN ?
-    global $conn;
-    $id = $datadetail["id"];
-    date_default_timezone_set("Asia/Makassar");
-    $tanggal = date('Y-m-d H:i:s', strtotime('now'));
-    $insert = "INSERT INTO absensi (user_id, tanggal_absen) VALUES ('$id', '$tanggal')";
-    $query = mysqli_query($conn, $insert);
-    $_SESSION["salah"] = $tanggal;
-    $_SESSION["pesan_absen"] = true;
-    header("Location: ../../dashboard/admin/scanner.php");
-    exit;
-} else {
-    $hehe = "Belum ada data";
-}
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -154,7 +192,7 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">E-ABSEN #TBR</a>
+                <a class="navbar-brand" href="index.html">E-ABSEN</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -261,66 +299,9 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
 
     <section class="content">
         <div class="container-fluid">
-            <div class="block-header">
-                <h2>DASHBOARD</h2>
+            <div class="block-header"><br>
             </div>
 
-            <!-- Exportable Table -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                RIWAYAT ABSENSI
-                            </h2>
-                        </div>
-                        <div class="body">
-
-                            <?php if (isset($_SESSION["pesan_absen"]) === true) {
-                                unset($_SESSION["pesan_absen"]);
-                                echo "<script>
-                                    alert('Proses Absensi Berhasil !');
-                                    </script>";
-                            }
-                            // else {
-                            //     echo "<script>
-                            //         alert('Proses Absensi Gagal !');
-                            //         </script>";
-                            // }
-                            ?>
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">No.</th>
-                                            <th>Nama</th>
-                                            <th>NIP</th>
-                                            <th>Tanggal</th>
-                                            <th>Keterangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $nomor = 1; ?>
-                                        <?php while ($absen = mysqli_fetch_assoc($dataabsen)) {
-                                        ?>
-                                            <tr>
-                                                <td class="text-center"><?= $nomor++; ?></td>
-                                                <td><?= $absen["nama"]; ?></td>
-                                                <td><?= $absen["nip"]; ?></td>
-                                                <td><?= $absen["tanggal_absen"]; ?></td>
-                                                <td class="text-center">Hadir</td>
-                                            </tr>
-                                        <?php } ?>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Exportable Table -->
             <div class="container">
                 <div class="col-lg-11 col-md-4 col-sm-6 col-xs-12">
                     <div class="card">
@@ -351,7 +332,8 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
                                                 <input type="text" name="qrcode" id="code" autofocus>
                                             </fieldset>
                                         </form>
-                                        <?php echo $hehe; ?>
+                                        <?php //echo $hehe; 
+                                        ?>
 
                                     </div>
                                     <div class="col-xs-12 preview-container camera">
@@ -368,6 +350,9 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
 
     <?php // unset($_SESSION["pesan_absen"]); 
     ?>
+
+    <!-- Jquery Core Js -->
+    <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
 
     <script src="../../engine/qrcode/scanner/js/app.js"></script>
     <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>

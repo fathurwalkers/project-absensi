@@ -26,6 +26,24 @@ function query($query)
     return $result;
 }
 
+
+function generateqr()
+{
+    global $conn;
+    $usernameqr          = strtolower(stripslashes($_POST["usernameguru"]));
+    $nipqr               = htmlspecialchars($_POST["nipguru"]);
+
+    $path = '../../assets/img/qrimage/';
+    $file = $path . $usernameqr . ".png";
+
+    $qrtext = $nipqr;
+
+    $generated = QRcode::png($qrtext, $file, 'L', 10, 2);
+
+    // mysqli_query($conn, "INSERT INTO detail VALUES ()");
+}
+
+
 function tambahdata($data)
 {
     global $conn;
@@ -40,6 +58,9 @@ function tambahdata($data)
     $alamat_guru         = htmlspecialchars($data["alamatguru"]);
     $jabatan_guru        = $data["jabatanguru"];
     $role_guru           = $data["roleguru"];
+
+    generateqr();
+
     $qr_guru             = strtolower(stripslashes($data["usernameguru"]));
     $qr_guru            .= ".png";
 

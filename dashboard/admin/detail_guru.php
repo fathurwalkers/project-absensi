@@ -16,6 +16,12 @@ $dataguru = query("SELECT user.username, detail.nama, detail.nip, detail.alamat,
                     LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
                     WHERE jabatan_id = '2' ORDER BY user.id DESC");
 
+$dataguru2 = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email, detail.qrcode
+                    FROM user
+                    LEFT JOIN detail ON user.detail_id = detail.id
+                    LEFT JOIN jabatan ON user.jabatan_id = jabatan.id
+                    WHERE jabatan_id = '2' ORDER BY user.id DESC");
+
 
 $datakepsek = query("SELECT user.username, detail.nama, detail.nip, detail.alamat, detail.telepon, user.email
                     FROM user
@@ -104,7 +110,7 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">E-ABSEN #TBR</a>
+                <a class="navbar-brand" href="index.html">E-ABSEN</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -253,6 +259,23 @@ $dataabsen = query("SELECT user.username, detail.nama, detail.nip, absensi.tangg
                 </div>
             </div>
             <!-- #END# Exportable Table -->
+            <div class="row">
+                <?php while ($guru2 = mysqli_fetch_assoc($dataguru2)) { ?>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="card">
+                            <div class="body bg-white">
+                                <center>
+
+                                    <img src="../../assets/img/qrimage/<?= $guru2["qrcode"]; ?>" width="250px">
+                                    <h4><?= $guru2["nama"]; ?></h4>
+                                    <span><?= $guru2["nip"]; ?></span>
+                                </center>
+
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
         </div>
     </section>
 

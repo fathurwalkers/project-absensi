@@ -310,6 +310,8 @@ if (!empty($_POST['qrcode']) && ($_POST['qrcode'] == $datadetail['nip'])) {
             </div>
     </section>
 
+    <!-- Jquery Core Js -->
+    <script src="../../vendor/bsb/plugins/jquery/jquery.min.js"></script>
 
     <script src="../../engine/qrcode/scanner/js/app.js"></script>
     <script src="../../engine/qrcode/scanner/vendor/instascan/instascan.min.js"></script>
