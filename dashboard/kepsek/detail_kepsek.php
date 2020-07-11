@@ -110,15 +110,10 @@ if (isset($_POST["generate"])) {
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">E-ABSEN #TBR</a>
+                <a class="navbar-brand" href="index.html">E-ABSEN</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- Call Search -->
-                    <li>
-                        <a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a>
-                    </li>
-                    <!-- #END# Call Search -->
                     <!-- LOGOUT -->
                     <li>
                         <a href="logout.php" class="js-search" class="btn btn-primary">LOGOUT</a>
@@ -222,16 +217,6 @@ if (isset($_POST["generate"])) {
                     <h5>Nomor Telepon : <?= $datalistkepsek["telepon"]; ?></h5>
                     <h5>Alamat : <?= $datalistkepsek["alamat"]; ?></h5>
                     <br>
-                    <center>
-                        <img src="../../assets/img/qrimage/<?= $datakepsek["username"] . ".png"; ?>" width="250px">
-                        <br>
-                        <form action="" method="post">
-                            <input type="hidden" name="qrkepsek" value="<?= $datalistkepsek["nip"]; ?>">
-                            <br>
-                            <button type="submit" name="generate" class="btn btn-success">GENERATE</button>
-                        </form>
-
-                    </center>
                     <br>
                 </div>
             </div>

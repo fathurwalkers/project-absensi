@@ -177,7 +177,7 @@ if (!empty($_POST['qrcode'])) {
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
     <!-- Search Bar -->
-    <div class="search-bar">
+    <!-- <div class="search-bar">
         <div class="search-icon">
             <i class="material-icons">search</i>
         </div>
@@ -185,7 +185,7 @@ if (!empty($_POST['qrcode'])) {
         <div class="close-search">
             <i class="material-icons">close</i>
         </div>
-    </div>
+    </div> -->
     <!-- #END# Search Bar -->
     <!-- Top Bar -->
     <nav class="navbar">
@@ -198,9 +198,9 @@ if (!empty($_POST['qrcode'])) {
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Call Search -->
-                    <li>
+                    <!-- <li>
                         <a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a>
-                    </li>
+                    </li> -->
                     <!-- #END# Call Search -->
 
                     <li>
